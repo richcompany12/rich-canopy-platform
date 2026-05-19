@@ -1,0 +1,345 @@
+리치캐노피 프로젝트 — 실제 개발 순서
+전체 단계 개요
+PHASE 0  프로젝트 준비
+PHASE 1  브랜드/디자인 구축
+PHASE 2  개발환경 세팅
+PHASE 3  메인 홈페이지 제작
+PHASE 4  작업사례 시스템 구축
+PHASE 5  블로그/기술문서 구축
+PHASE 6  AI SEO 구축
+PHASE 7  QR 차량관리 시스템
+PHASE 8  예약 시스템
+PHASE 9  재고관리 시스템
+PHASE 10 글로벌/AI 확장
+지금 당장 해야할 것
+✅ PHASE 0 — 프로젝트 준비
+
+이 단계가 가장 중요.
+
+STEP 0-1
+프로젝트 폴더 생성
+
+PC에 프로젝트 전용 폴더 생성.
+
+추천:
+
+RichCanopyPlatform
+STEP 0-2
+GitHub 저장소 생성
+
+이유:
+
+코드 백업
+버전관리
+AI 협업
+배포 연동
+추천 저장소 이름
+rich-canopy-platform
+STEP 0-3
+기술 스택 확정
+
+이건 이미 거의 결정됨.
+
+최종 기술 스택
+Frontend
+- Next.js
+- React
+- TypeScript
+- Tailwind CSS
+
+Backend
+- Firebase
+
+Hosting
+- Firebase Hosting
+
+PWA
+- next-pwa
+STEP 0-4
+Firebase 새 프로젝트 생성
+
+기존 Firebase 사용중이어도:
+새 프로젝트 추천.
+
+추천 이름
+rich-canopy-global
+활성화 해야할 것
+Authentication
+Firestore Database
+Storage
+Hosting
+Functions
+FCM
+STEP 0-5
+로컬 개발환경 설치
+
+필수 설치:
+
+Node.js
+
+추천:
+LTS 버전.
+
+VSCode
+
+추천 확장:
+
+ES7 React
+Tailwind CSS IntelliSense
+Prettier
+Firebase Explorer
+STEP 0-6
+도메인 후보 정리
+
+지금 바로 구매 안 해도 됨.
+
+현재 후보
+richcanopy.kr
+richcanopy.co.kr
+rich-canopy.kr
+여기까지가 오늘 해야할 것
+다음 단계
+✅ PHASE 1 — 브랜드 시스템 구축
+
+이 단계에서:
+사이트의 뼈대를 만든다.
+
+STEP 1-1
+브랜드 디자인 정리
+
+정리 항목:
+
+로고
+컬러
+폰트
+브랜드 문구
+톤앤매너
+현재 확정 방향
+블랙 + 골드
+프리미엄 산업디자인
+미래형 모빌리티
+STEP 1-2
+사이트 구조 설계
+
+확정 메뉴:
+
+HOME
+PRODUCTS
+INSTALLATION CASES
+RAIN TESTS
+LEGAL GUIDE
+FAQ
+BLOG
+CONTACT
+STEP 1-3
+데이터 구조 설계
+
+엄청 중요.
+
+작업 사례 데이터 구조
+{
+  "vehicle": "",
+  "year": "",
+  "canopyModel": "",
+  "installationDate": "",
+  "installationTime": "",
+  "legalModification": false,
+  "parts": [],
+  "photos": [],
+  "customerFeedback": "",
+  "usage": "",
+  "tags": []
+}
+STEP 1-4
+SEO / AI 태그 전략 설계
+
+이 단계 중요.
+
+적용 예정
+JSON-LD
+Schema.org
+FAQ Schema
+HowTo Schema
+Open Graph
+Semantic HTML
+다음 단계
+✅ PHASE 2 — 개발환경 구축
+
+이제 진짜 개발 시작.
+
+STEP 2-1
+Next.js 프로젝트 생성
+
+명령어:
+
+npx create-next-app@latest
+옵션 추천
+TypeScript = YES
+Tailwind = YES
+App Router = YES
+ESLint = YES
+STEP 2-2
+Firebase 연동
+
+연결:
+
+Firestore
+Storage
+Auth
+Hosting
+STEP 2-3
+PWA 설정
+
+목표:
+
+홈화면 아이콘
+앱처럼 실행
+전체화면
+푸시알림
+다음 단계
+✅ PHASE 3 — 메인 홈페이지 제작
+
+여기서 브랜드가 살아남.
+
+우선 제작할 페이지
+가장 먼저
+HOME
+그 다음
+INSTALLATION CASES
+이유
+
+작업 사례가:
+네 사이트 핵심 자산이라서.
+
+다음 단계
+✅ PHASE 4 — 작업 사례 시스템
+
+이게 가장 중요.
+
+핵심 기능
+작업 등록
+사진 업로드
+차종 태그
+자동 SEO 생성
+자동 AI 태그 생성
+STEP 4-1
+관리자 업로드 페이지
+
+예:
+
+차종 입력
+설명 입력
+사진 업로드
+태그 입력
+STEP 4-2
+자동 SEO 데이터 생성
+
+예:
+
+<script type=\"application/ld+json\">
+
+자동 생성.
+
+다음 단계
+✅ PHASE 5 — 블로그/기술문서 시스템
+
+AI 검색 핵심 단계.
+
+작성할 핵심 문서
+PCX 캐노피 구조변경
+NMAX 우천 테스트
+배달 라이더 세팅
+겨울 방풍 테스트
+목적
+검색 유입
+AI 노출
+브랜드 전문성
+다음 단계
+✅ PHASE 6 — AI SEO 구축
+
+여기서 진짜 AI 친화화.
+
+적용 항목
+sitemap.xml
+robots.txt
+JSON-LD
+Schema.org
+FAQ Schema
+HowTo Schema
+Open Graph
+다음 단계
+✅ PHASE 7 — QR 차량관리 시스템
+기능
+QR 생성
+차량 등록
+AS 기록
+작업 이력 조회
+QR 흐름
+작업 완료
+↓
+QR 생성
+↓
+스티커 부착
+↓
+QR 조회
+다음 단계
+✅ PHASE 8 — 예약 시스템
+기능
+예약 캘린더
+작업 가능 시간
+예약 상태
+알림
+미래 확장
+갤럭시 AI 통화요약 연동
+AI 일정 추천
+다음 단계
+✅ PHASE 9 — 재고관리 시스템
+기능
+재고 수량
+원가 관리
+자동 차감
+부족 알림
+다음 단계
+✅ PHASE 10 — 글로벌/AI 확장
+목표
+다국어
+AI 챗봇
+해외 문의
+파트너 시스템
+온라인 판매
+가장 중요한 현실 조언
+
+진짜 중요.
+
+처음부터 완벽하게 만들려고 하지 마
+
+추천 순서:
+
+먼저 만들 것
+1. 브랜드 사이트
+2. 작업 사례 업로드
+3. 블로그
+그 다음
+QR
+예약
+재고
+왜냐면
+
+네 진짜 자산은 결국:
+
+실제 작업 데이터
++
+사진
++
+경험
++
+기술문서
+
+이거거든.
+
+이게 쌓이기 시작하면:
+
+검색이 붙고
+AI가 읽고
+브랜드가 생기고
+글로벌 문의가 오기 시작해.
