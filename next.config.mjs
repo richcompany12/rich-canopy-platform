@@ -1,6 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  /* config options here */
+  output: 'export',
+  trailingSlash: true,
+  images: {
+    unoptimized: true,
+  },
+  exportPathMap: async function() {
+    return {
+      '/': { page: '/' },
+    };
+  },
 };
 
 export default nextConfig;

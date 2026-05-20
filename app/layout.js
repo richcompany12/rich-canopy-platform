@@ -1,16 +1,16 @@
+'use client';
 import "./globals.css";
 import Header from "./components/Header";
-
-export const metadata = {
-  title: "Rich Canopy",
-  description: "Premium Scooter Canopy Systems",
-};
+import { usePathname } from "next/navigation";
 
 export default function RootLayout({ children }) {
+  const pathname = usePathname();
+  const isAdmin = pathname?.startsWith('/admin');
+
   return (
     <html lang="ko">
       <body style={{ backgroundColor: '#111418', minHeight: '100vh' }}>
-        <Header />
+        {!isAdmin && <Header />}
         {children}
       </body>
     </html>
