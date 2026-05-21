@@ -9,7 +9,7 @@ export default function Header() {
       backgroundColor: '#111418',
       borderBottom: '0.5px solid #21262D',
       padding: '0 20px',
-      height: '56px',
+      height: '70px',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'space-between',
@@ -17,11 +17,11 @@ export default function Header() {
       top: 0,
       zIndex: 100,
     }}>
-      <a href="/">
+ <a href="/" style={{ display: 'flex', alignItems: 'center' }}>
   <img 
     src="/logo.png" 
     alt="Rich Canopy" 
-    style={{ height: '70px', width: 'auto' }} 
+    style={{ height: '70px', width: 'auto', marginLeft: '0' }} 
   />
 </a>
 

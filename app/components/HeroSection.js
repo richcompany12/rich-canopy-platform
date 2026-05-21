@@ -43,7 +43,7 @@ export default function HeroSection() {
           left: 0,
           width: '100%',
           height: '100%',
-          objectFit: 'cover',
+          objectFit: 'contain',
           objectPosition: 'center top',
         }}
       />
