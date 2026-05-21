@@ -17,10 +17,13 @@ export default function Header() {
       top: 0,
       zIndex: 100,
     }}>
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
-        <span style={{ color: '#F0F6FC', fontSize: '15px', fontWeight: '600', letterSpacing: '3px' }}>RICH CANOPY</span>
-        <span style={{ color: '#4FC3F7', fontSize: '8px', letterSpacing: '2px' }}>PREMIUM SCOOTER CANOPY</span>
-      </div>
+      <a href="/">
+  <img 
+    src="/logo.png" 
+    alt="Rich Canopy" 
+    style={{ height: '70px', width: 'auto' }} 
+  />
+</a>
 
       <button onClick={() => setOpen(!open)} style={{
         background: 'none',
