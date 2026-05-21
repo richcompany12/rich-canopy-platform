@@ -75,7 +75,7 @@ export default function ContactSection() {
           </div>
           <div>
             <label style={{ color: '#8B949E', fontSize: '11px', letterSpacing: '1px', display: 'block', marginBottom: '8px' }}>연락처</label>
-            <input type="tel" placeholder="010-4747-4763" value={form.phone}
+            <input type="tel" placeholder="010-0000-0000" value={form.phone}
               onChange={(e) => setForm({ ...form, phone: e.target.value })}
               style={inputStyle} />
           </div>
@@ -103,7 +103,7 @@ export default function ContactSection() {
           <div style={{ width: '44px', height: '44px', backgroundColor: '#0d2137', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px' }}>📞</div>
           <div>
             <p style={{ color: '#F0F6FC', fontSize: '14px', fontWeight: '500' }}>전화 문의</p>
-            <p style={{ color: '#8B949E', fontSize: '12px', marginTop: '2px' }}>010-0000-0000</p>
+            <p style={{ color: '#8B949E', fontSize: '12px', marginTop: '2px' }}>010-4747-4763</p>
           </div>
         </a>
 
