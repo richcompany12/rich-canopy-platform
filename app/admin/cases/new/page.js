@@ -1,7 +1,7 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { db, storage } from '../../../lib/firebase';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { collection, addDoc, serverTimestamp, doc, getDoc, updateDoc, arrayUnion } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { useRouter } from 'next/navigation';
 
@@ -13,38 +13,40 @@ export default function NewCase() {
   const [tags, setTags] = useState([]);
   const [customTag, setCustomTag] = useState('');
   const [parts, setParts] = useState(['']);
+  const [models, setModels] = useState([]);
+  const [showModelModal, setShowModelModal] = useState(false);
+  const [newModelInput, setNewModelInput] = useState('');
   const [form, setForm] = useState({
-    model: '',
-    year: '',
-    workTime: '',
-    desc: '',
-    comment: '',
-    review: '',
-  });
+  model: '', year: '', workTime: '', desc: '', comment: '', review: '', featured: false,
+});
 
   const defaultTags = ['배달용', '통근용', '장거리용', '레저용', '마실용'];
-  const models = ['Honda PCX 125', 'Yamaha NMAX 155', 'Honda Forza 350', 'Honda ADV 150', 'Yamaha UHR', '기타'];
+
+  useEffect(() => {
+    const fetchModels = async () => {
+      const docRef = doc(db, 'models', 'list');
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        setModels(docSnap.data().models || []);
+      }
+    };
+    fetchModels();
+  }, []);
 
   const toggleTag = (tag) => {
-    setTags((prev) =>
-      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
-    );
+    setTags((prev) => prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]);
   };
 
   const addCustomTag = () => {
     if (!customTag.trim()) return;
-    if (!tags.includes(customTag.trim())) {
-      setTags((prev) => [...prev, customTag.trim()]);
-    }
+    if (!tags.includes(customTag.trim())) setTags((prev) => [...prev, customTag.trim()]);
     setCustomTag('');
   };
 
   const handleImageAdd = (e) => {
     const files = Array.from(e.target.files);
     const newImgs = files.map((file) => ({
-      file,
-      preview: URL.createObjectURL(file),
-      caption: '',
+      file, preview: URL.createObjectURL(file), caption: '',
     }));
     setImages((prev) => [...prev, ...newImgs]);
     e.target.value = '';
@@ -66,6 +68,24 @@ export default function NewCase() {
 
   const addPart = () => setParts((prev) => [...prev, '']);
   const removePart = (index) => setParts((prev) => prev.filter((_, i) => i !== index));
+
+  const handleAddModelPermanent = async () => {
+    if (!newModelInput.trim()) return;
+    const docRef = doc(db, 'models', 'list');
+    await updateDoc(docRef, { models: arrayUnion(newModelInput.trim()) });
+    setModels((prev) => [...prev, newModelInput.trim()]);
+    setForm({ ...form, model: newModelInput.trim() });
+    setNewModelInput('');
+    setShowModelModal(false);
+  };
+
+  const handleAddModelTemp = () => {
+    if (!newModelInput.trim()) return;
+    setModels((prev) => [...prev, newModelInput.trim()]);
+    setForm({ ...form, model: newModelInput.trim() });
+    setNewModelInput('');
+    setShowModelModal(false);
+  };
 
   const handleSubmit = async () => {
     if (!form.model || !form.year || images.length === 0) {
@@ -100,7 +120,7 @@ export default function NewCase() {
   };
 
   const inputStyle = {
-    width: '100%', backgroundColor: '#161b22', border: '0.5px solid #21262D',
+    width: '100%', backgroundColor: '#0d1117', border: '0.5px solid #21262D',
     color: '#F0F6FC', padding: '12px', borderRadius: '4px', fontSize: '14px',
   };
   const labelStyle = {
@@ -110,6 +130,42 @@ export default function NewCase() {
   return (
     <div style={{ backgroundColor: '#111418', minHeight: '100vh', padding: '24px' }}>
 
+      {showModelModal && (
+        <div style={{
+          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+          backgroundColor: 'rgba(0,0,0,0.7)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          zIndex: 999,
+        }}>
+          <div style={{
+            backgroundColor: '#161b22', border: '0.5px solid #21262D',
+            borderRadius: '12px', padding: '24px', width: '300px',
+          }}>
+            <p style={{ color: '#F0F6FC', fontSize: '15px', fontWeight: '600', marginBottom: '16px' }}>차종 추가</p>
+            <input type="text" placeholder="차종명 입력" value={newModelInput}
+              onChange={(e) => setNewModelInput(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && handleAddModelPermanent()}
+              style={{ ...inputStyle, marginBottom: '16px' }} />
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <button onClick={handleAddModelPermanent} style={{
+                backgroundColor: '#4FC3F7', color: '#111418',
+                border: 'none', padding: '12px', borderRadius: '4px',
+                fontSize: '13px', fontWeight: '700', cursor: 'pointer',
+              }}>드롭다운에 영구 추가</button>
+              <button onClick={handleAddModelTemp} style={{
+                backgroundColor: 'transparent', border: '0.5px solid #21262D',
+                color: '#8B949E', padding: '12px', borderRadius: '4px',
+                fontSize: '13px', cursor: 'pointer',
+              }}>이번에만 사용</button>
+              <button onClick={() => setShowModelModal(false)} style={{
+                backgroundColor: 'transparent', border: 'none',
+                color: '#484F58', padding: '8px', fontSize: '12px', cursor: 'pointer',
+              }}>취소</button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '32px' }}>
         <a href="/admin/dashboard" style={{ color: '#484F58', fontSize: '13px' }}>← 대시보드</a>
         <h1 style={{ color: '#F0F6FC', fontSize: '20px', fontWeight: '600' }}>새 작업사례 등록</h1>
@@ -117,35 +173,43 @@ export default function NewCase() {
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', maxWidth: '600px' }}>
 
-        {/* 기본정보 */}
         <div style={{ backgroundColor: '#161b22', border: '0.5px solid #21262D', borderRadius: '8px', padding: '20px' }}>
           <p style={{ color: '#4FC3F7', fontSize: '11px', letterSpacing: '2px', marginBottom: '16px' }}>기본 정보</p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             <div>
               <label style={labelStyle}>차종 *</label>
-              <select value={form.model} onChange={(e) => setForm({ ...form, model: e.target.value })} style={inputStyle}>
+              <select value={form.model} onChange={(e) => {
+                if (e.target.value === '기타') {
+                  setShowModelModal(true);
+                } else {
+                  setForm({ ...form, model: e.target.value });
+                }
+              }} style={inputStyle}>
                 <option value="">선택하세요</option>
                 {models.map((m) => <option key={m} value={m}>{m}</option>)}
+                <option value="기타">+ 기타 (직접입력)</option>
               </select>
             </div>
             <div style={{ display: 'flex', gap: '12px' }}>
               <div style={{ flex: 1 }}>
                 <label style={labelStyle}>연도 *</label>
-                <input type="text" placeholder="예: 2025" value={form.year} onChange={(e) => setForm({ ...form, year: e.target.value })} style={inputStyle} />
+                <input type="text" placeholder="예: 2025" value={form.year}
+                  onChange={(e) => setForm({ ...form, year: e.target.value })} style={inputStyle} />
               </div>
               <div style={{ flex: 1 }}>
                 <label style={labelStyle}>작업시간</label>
-                <input type="text" placeholder="예: 3시간" value={form.workTime} onChange={(e) => setForm({ ...form, workTime: e.target.value })} style={inputStyle} />
+                <input type="text" placeholder="예: 3시간" value={form.workTime}
+                  onChange={(e) => setForm({ ...form, workTime: e.target.value })} style={inputStyle} />
               </div>
             </div>
             <div>
               <label style={labelStyle}>한줄 설명</label>
-              <input type="text" placeholder="예: 풀세팅 배달 장착" value={form.desc} onChange={(e) => setForm({ ...form, desc: e.target.value })} style={inputStyle} />
+              <input type="text" placeholder="예: 풀세팅 배달 장착" value={form.desc}
+                onChange={(e) => setForm({ ...form, desc: e.target.value })} style={inputStyle} />
             </div>
           </div>
         </div>
 
-        {/* 태그 */}
         <div style={{ backgroundColor: '#161b22', border: '0.5px solid #21262D', borderRadius: '8px', padding: '20px' }}>
           <p style={{ color: '#4FC3F7', fontSize: '11px', letterSpacing: '2px', marginBottom: '16px' }}>태그 (중복선택 가능)</p>
           <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '12px' }}>
@@ -159,12 +223,14 @@ export default function NewCase() {
             ))}
           </div>
           <div style={{ display: 'flex', gap: '8px' }}>
-            <input type="text" placeholder="직접 입력" value={customTag} onChange={(e) => setCustomTag(e.target.value)}
+            <input type="text" placeholder="직접 입력" value={customTag}
+              onChange={(e) => setCustomTag(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && addCustomTag()}
               style={{ ...inputStyle, flex: 1 }} />
             <button onClick={addCustomTag} style={{
               backgroundColor: '#4FC3F7', color: '#111418',
-              border: 'none', padding: '8px 16px', borderRadius: '4px', fontSize: '12px', cursor: 'pointer', fontWeight: '700',
+              border: 'none', padding: '8px 16px', borderRadius: '4px',
+              fontSize: '12px', cursor: 'pointer', fontWeight: '700',
             }}>+ 추가</button>
           </div>
           {tags.filter(t => !defaultTags.includes(t)).length > 0 && (
@@ -176,14 +242,15 @@ export default function NewCase() {
                   display: 'flex', alignItems: 'center', gap: '6px',
                 }}>
                   {t}
-                  <button onClick={() => toggleTag(t)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#111418', fontSize: '12px', padding: 0 }}>✕</button>
+                  <button onClick={() => toggleTag(t)} style={{
+                    background: 'none', border: 'none', cursor: 'pointer', color: '#111418', fontSize: '12px', padding: 0,
+                  }}>✕</button>
                 </span>
               ))}
             </div>
           )}
         </div>
 
-        {/* 사진 */}
         <div style={{ backgroundColor: '#161b22', border: '0.5px solid #21262D', borderRadius: '8px', padding: '20px' }}>
           <p style={{ color: '#4FC3F7', fontSize: '11px', letterSpacing: '2px', marginBottom: '16px' }}>사진 업로드 * (클릭 시 대표사진)</p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '12px' }}>
@@ -225,7 +292,6 @@ export default function NewCase() {
           </label>
         </div>
 
-        {/* 사용 부품 */}
         <div style={{ backgroundColor: '#161b22', border: '0.5px solid #21262D', borderRadius: '8px', padding: '20px' }}>
           <p style={{ color: '#4FC3F7', fontSize: '11px', letterSpacing: '2px', marginBottom: '16px' }}>사용 부품</p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
@@ -247,7 +313,6 @@ export default function NewCase() {
           </div>
         </div>
 
-        {/* 작업내용 + 고객후기 */}
         <div style={{ backgroundColor: '#161b22', border: '0.5px solid #21262D', borderRadius: '8px', padding: '20px' }}>
           <p style={{ color: '#4FC3F7', fontSize: '11px', letterSpacing: '2px', marginBottom: '16px' }}>상세 내용</p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
@@ -265,6 +330,16 @@ export default function NewCase() {
             </div>
           </div>
         </div>
+
+<div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '16px 0' }}>
+  <input type="checkbox" id="featured" checked={form.featured}
+    onChange={(e) => setForm({ ...form, featured: e.target.checked })}
+    style={{ width: '18px', height: '18px', cursor: 'pointer' }} />
+  <label htmlFor="featured" style={{ color: '#F0F6FC', fontSize: '14px', cursor: 'pointer' }}>
+    홈화면에 노출
+  </label>
+  <span style={{ color: '#484F58', fontSize: '12px' }}>(체크 시 메인 페이지에 표시)</span>
+</div>
 
         <button onClick={handleSubmit} disabled={loading} style={{
           backgroundColor: '#4FC3F7', color: '#111418',

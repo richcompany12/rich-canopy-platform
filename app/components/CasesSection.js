@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { db } from '../lib/firebase';
-import { collection, getDocs, orderBy, query, limit } from 'firebase/firestore';
+import { collection, getDocs, orderBy, query, limit, where } from 'firebase/firestore';
 
 export default function CasesSection() {
   const [cases, setCases] = useState([]);
@@ -9,7 +9,12 @@ export default function CasesSection() {
 
   useEffect(() => {
     const fetchCases = async () => {
-      const q = query(collection(db, 'cases'), orderBy('createdAt', 'desc'), limit(6));
+      const q = query(
+  collection(db, 'cases'),
+  where('featured', '==', true),
+  orderBy('createdAt', 'desc'),
+  limit(6)
+);
       const snapshot = await getDocs(q);
       const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
       setCases(data);
