@@ -57,6 +57,14 @@ export default function Header() {
               letterSpacing: '2px',
             }}>{item}</a>
           ))}
+        <a href="/admin" onClick={() => setOpen(false)} style={{
+  color: '#484F58',
+  fontSize: '11px',
+  letterSpacing: '2px',
+  marginTop: '20px',
+  borderTop: '0.5px solid #21262D',
+  paddingTop: '20px',
+}}>ADMIN</a>  
         </nav>
       )}
     </header>
