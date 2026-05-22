@@ -1,28 +1,12 @@
 'use client';
-import { useRef } from 'react';
 import { useRouter } from 'next/navigation';
 
 export default function HeroSection() {
   const router = useRouter();
-  const pressTimer = useRef(null);
-
-  const handlePressStart = () => {
-    pressTimer.current = setTimeout(() => {
-      router.push('/admin');
-    }, 4000);
-  };
-
-  const handlePressEnd = () => {
-    clearTimeout(pressTimer.current);
-  };
 
   return (
     <section
-      onMouseDown={handlePressStart}
-      onMouseUp={handlePressEnd}
-      onTouchStart={handlePressStart}
-      onTouchEnd={handlePressEnd}
-      style={{
+       style={{
         backgroundColor: '#111418',
         minHeight: '100vh',
         display: 'flex',

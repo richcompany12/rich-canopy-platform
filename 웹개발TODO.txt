@@ -1,0 +1,16 @@
+1. GitHub 주소
+   https://github.com/richcompany12/rich-canopy-platform
+
+2. 오늘 TODO 목록
+   - FAQ 페이지 (Firebase 어드민 관리형)
+   - 구조변경 가이드 페이지 + 도면 다운로드
+   - StatsBar 회전 애니메이션
+   - 히어로 크로스페이드 슬라이드 (이미지 3장 대기중)
+   - 작업사례 태그 필터링
+   - CSS 파일 분리
+
+3. 현재 상태
+   - richcanopy.kr 배포 완료
+   - Firebase 연동 완료
+   - 관리자 로그인/등록/수정/삭제 완료
+   - EmailJS 문의 폼 완료
