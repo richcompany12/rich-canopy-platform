@@ -89,6 +89,7 @@ export default function Schedule() {
   const handleDelete = async (id) => {
     if (!confirm('삭제할까요?')) return;
     await deleteDoc(doc(db, 'schedules', id));
+    setShowModal(false);
     fetchSchedules();
   };
 
@@ -126,10 +127,31 @@ export default function Schedule() {
             <p style={{ color: '#4FC3F7', fontSize: '13px', letterSpacing: '2px', marginBottom: '16px' }}>
               {editItem ? '작업 수정' : '새 작업 등록'}
             </p>
+
             <input placeholder="고객명 *" value={form.customerName}
               onChange={e => setForm({ ...form, customerName: e.target.value })} style={inputStyle} />
-            <input placeholder="연락처" value={form.phone}
-              onChange={e => setForm({ ...form, phone: e.target.value })} style={inputStyle} />
+
+            {/* 전화번호 + 전화걸기 버튼 */}
+            <div style={{ display: 'flex', gap: '8px', marginBottom: '10px' }}>
+              <input placeholder="연락처" value={form.phone}
+                onChange={e => setForm({ ...form, phone: e.target.value })}
+                style={{ ...inputStyle, flex: 1, marginBottom: 0 }} />
+              {form.phone && (
+                <a href={`tel:${form.phone}`} style={{
+                  backgroundColor: '#0d2137',
+                  border: '0.5px solid #4FC3F7',
+                  color: '#4FC3F7',
+                  padding: '10px 14px',
+                  borderRadius: '4px',
+                  fontSize: '16px',
+                  textDecoration: 'none',
+                  display: 'flex',
+                  alignItems: 'center',
+                  whiteSpace: 'nowrap',
+                }}>📞</a>
+              )}
+            </div>
+
             <input placeholder="차종" value={form.model}
               onChange={e => setForm({ ...form, model: e.target.value })} style={inputStyle} />
             <input placeholder="작업내용" value={form.work}
@@ -147,7 +169,8 @@ export default function Schedule() {
             <textarea placeholder="기타 메모" value={form.memo}
               onChange={e => setForm({ ...form, memo: e.target.value })}
               rows={3} style={{ ...inputStyle, resize: 'vertical' }} />
-            <div style={{ display: 'flex', gap: '8px' }}>
+
+            <div style={{ display: 'flex', gap: '8px', marginBottom: '8px' }}>
               <button onClick={handleSubmit} style={{
                 flex: 1, backgroundColor: '#4FC3F7', color: '#111418',
                 border: 'none', padding: '12px', borderRadius: '4px', fontWeight: '700', cursor: 'pointer',
@@ -157,6 +180,14 @@ export default function Schedule() {
                 color: '#8B949E', padding: '12px', borderRadius: '4px', cursor: 'pointer',
               }}>취소</button>
             </div>
+
+            {editItem && (
+              <button onClick={() => handleDelete(editItem.id)} style={{
+                width: '100%', backgroundColor: 'transparent',
+                border: '0.5px solid #3d1a1a', color: '#E63946',
+                padding: '10px', borderRadius: '4px', cursor: 'pointer', fontSize: '13px',
+              }}>삭제</button>
+            )}
           </div>
         </div>
       )}
@@ -242,40 +273,35 @@ export default function Schedule() {
           </p>
         ) : (
           filteredSchedules.map(item => (
-            <div key={item.id} style={{
-              backgroundColor: '#161b22', border: `0.5px solid ${statusColors[item.status]}33`,
-              borderRadius: '8px', padding: '14px',
-              borderLeft: `3px solid ${statusColors[item.status]}`,
-            }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
-                <div>
-                  <span style={{ color: '#F0F6FC', fontSize: '14px', fontWeight: '600' }}>{item.customerName}</span>
-                  {item.phone && <span style={{ color: '#484F58', fontSize: '11px', marginLeft: '8px' }}>{item.phone}</span>}
-                </div>
-                <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
-                  <button onClick={() => handleStatusChange(item)} style={{
+            <div key={item.id}
+              onClick={() => openEditModal(item)}
+              style={{
+                backgroundColor: '#161b22',
+                border: `0.5px solid ${statusColors[item.status]}33`,
+                borderRadius: '8px', padding: '14px',
+                borderLeft: `3px solid ${statusColors[item.status]}`,
+                cursor: 'pointer',
+                userSelect: 'none',
+                WebkitUserSelect: 'none',
+              }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                <span style={{ color: '#F0F6FC', fontSize: '14px', fontWeight: '600' }}>{item.customerName}</span>
+                <button
+                  onClick={e => { e.stopPropagation(); handleStatusChange(item); }}
+                  style={{
                     backgroundColor: `${statusColors[item.status]}22`,
                     border: `0.5px solid ${statusColors[item.status]}`,
                     color: statusColors[item.status],
-                    padding: '3px 8px', borderRadius: '4px', fontSize: '10px', cursor: 'pointer',
+                    padding: '3px 10px', borderRadius: '4px', fontSize: '10px', cursor: 'pointer',
                   }}>{item.status}</button>
-                  <button onClick={() => openEditModal(item)} style={{
-                    background: 'none', border: '0.5px solid #21262D',
-                    color: '#8B949E', padding: '3px 8px', borderRadius: '4px', fontSize: '10px', cursor: 'pointer',
-                  }}>수정</button>
-                  <button onClick={() => handleDelete(item.id)} style={{
-                    background: 'none', border: '0.5px solid #3d1a1a',
-                    color: '#E63946', padding: '3px 8px', borderRadius: '4px', fontSize: '10px', cursor: 'pointer',
-                  }}>삭제</button>
-                </div>
               </div>
-              <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', marginBottom: '6px' }}>
+              <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
                 {item.model && <span style={{ color: '#8B949E', fontSize: '12px' }}>🏍 {item.model}</span>}
                 {item.work && <span style={{ color: '#8B949E', fontSize: '12px' }}>🔧 {item.work}</span>}
                 <span style={{ color: '#484F58', fontSize: '12px' }}>📅 {item.date} {item.time}</span>
               </div>
               {item.memo && (
-                <div style={{ backgroundColor: '#0d1117', borderRadius: '4px', padding: '8px', marginTop: '6px' }}>
+                <div style={{ backgroundColor: '#0d1117', borderRadius: '4px', padding: '8px', marginTop: '8px' }}>
                   <p style={{ color: '#484F58', fontSize: '11px' }}>📝 {item.memo}</p>
                 </div>
               )}
@@ -283,7 +309,6 @@ export default function Schedule() {
           ))
         )}
       </div>
-
     </div>
   );
 }

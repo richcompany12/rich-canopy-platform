@@ -13,6 +13,8 @@ export const metadata = {
     ],
     apple: '/apple-touch-icon.png',
   },
+  manifest: '/site.webmanifest',
+  themeColor: '#111418',
   openGraph: {
     title: "Rich Canopy - 프리미엄 스쿠터 캐노피 시스템",
     description: "PCX, NMAX, Forza 등 스쿠터 캐노피 장착 전문. 비, 바람, 햇빛으로부터 완벽한 보호.",
