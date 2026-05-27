@@ -53,13 +53,18 @@ export default function Header() {
           gap: '20px',
           zIndex: 99,
         }}>
-          {['CASES', 'RAIN TEST', 'FAQ', 'CONTACT'].map((item) => (
-            <a key={item} href={`#${item.toLowerCase()}`} onClick={() => setOpen(false)} style={{
-              color: '#8B949E',
-              fontSize: '13px',
-              letterSpacing: '2px',
-            }}>{item}</a>
-          ))}
+         {[
+  { label: 'CASES', href: '#cases' },
+  { label: 'RAIN TEST', href: '#rain-test' },
+  { label: 'FAQ', href: '/faq' },
+  { label: 'CONTACT', href: '#contact' },
+].map((item) => (
+  <a key={item.label} href={item.href} onClick={() => setOpen(false)} style={{
+    color: '#8B949E',
+    fontSize: '13px',
+    letterSpacing: '2px',
+  }}>{item.label}</a>
+))}
         <a href="/admin" onClick={() => setOpen(false)} style={{
   color: '#484F58',
   fontSize: '11px',
