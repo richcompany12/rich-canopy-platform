@@ -20,6 +20,19 @@ export default function FaqPage() {
 
   const toggle = (id) => setOpenId(openId === id ? null : id);
 
+  const shareFaq = () => {
+    if (navigator.share) {
+      navigator.share({
+        title: '리치캐노피 FAQ',
+        text: 'PCX·NMAX 캐노피 자주 묻는 질문',
+        url: 'https://richcanopy.kr/faq',
+      });
+    } else {
+      navigator.clipboard.writeText('https://richcanopy.kr/faq');
+      alert('FAQ 링크가 복사되었습니다.');
+    }
+  };
+
   return (
     <main style={{ backgroundColor: '#0d1117', minHeight: '100vh', padding: '60px 20px' }}>
       <div style={{ maxWidth: '720px', margin: '0 auto' }}>
@@ -35,6 +48,22 @@ export default function FaqPage() {
           <p style={{ color: '#8B949E', fontSize: '14px' }}>
             캐노피 설치에 관해 궁금한 점을 확인하세요
           </p>
+          {/* 공유 버튼 */}
+          <button
+            onClick={shareFaq}
+            style={{
+              marginTop: '20px',
+              backgroundColor: 'transparent',
+              border: '0.5px solid #21262D',
+              borderRadius: '4px',
+              color: '#8B949E',
+              fontSize: '12px',
+              padding: '8px 20px',
+              cursor: 'pointer',
+              letterSpacing: '1px',
+            }}>
+            🔗 FAQ 링크 공유
+          </button>
         </div>
 
         {/* FAQ 목록 */}
@@ -55,7 +84,6 @@ export default function FaqPage() {
                   transition: 'border-color 0.2s',
                 }}
               >
-                {/* 질문 (클릭 토글) */}
                 <button
                   onClick={() => toggle(item.id)}
                   style={{
@@ -78,7 +106,6 @@ export default function FaqPage() {
                   }}>+</span>
                 </button>
 
-                {/* 답변 */}
                 {openId === item.id && (
                   <div style={{
                     backgroundColor: '#111418',
