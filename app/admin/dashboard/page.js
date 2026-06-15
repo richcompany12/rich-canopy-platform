@@ -57,6 +57,7 @@ export default function Dashboard() {
           { label: '새 작업사례 등록', desc: '사진 + 내용 업로드', href: '/admin/cases/new' },
           { label: '작업 스케줄', desc: '예약 및 일정 관리', href: '/admin/schedule' },
           { label: 'FAQ 관리', desc: '자주 묻는 질문 등록 / 수정 / 삭제', href: '/admin/faq' },
+          { label: '작업 노트', desc: '나만의 작업 노하우 보관', href: '/admin/notes' },
         ].map((item) => (
           <a key={item.label} href={item.href} style={{
             backgroundColor: '#161b22',
