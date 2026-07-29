@@ -4,6 +4,24 @@ import { useEffect, useState } from 'react';
 import { db } from '../lib/firebase';
 import { collection, getDocs, orderBy, query } from 'firebase/firestore';
 
+function getYoutubeEmbedUrl(url) {
+  if (!url) return null;
+  try {
+    const u = new URL(url);
+    let videoId = null;
+    if (u.hostname.includes('youtu.be')) {
+      videoId = u.pathname.slice(1);
+    } else if (u.hostname.includes('youtube.com')) {
+      if (u.pathname === '/watch') videoId = u.searchParams.get('v');
+      else if (u.pathname.startsWith('/embed/')) videoId = u.pathname.split('/embed/')[1];
+      else if (u.pathname.startsWith('/shorts/')) videoId = u.pathname.split('/shorts/')[1];
+    }
+    return videoId ? `https://www.youtube.com/embed/${videoId}` : null;
+  } catch {
+    return null;
+  }
+}
+
 export default function GuidePage() {
   const [steps, setSteps] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -49,6 +67,7 @@ export default function GuidePage() {
   const total = steps.length;
   const images = step.images || [];
   const isPending = step.status === 'pending';
+  const embedUrl = getYoutubeEmbedUrl(step.videoUrl);
 
   return (
     <main style={{ backgroundColor: '#0d1117', minHeight: '100vh', padding: '48px 20px 80px' }}>
@@ -153,6 +172,21 @@ export default function GuidePage() {
               marginBottom: '20px',
             }}>
               📷 사진 업로드 예정
+            </div>
+          )}
+
+          {/* 영상 */}
+          {embedUrl && (
+            <div style={{ marginBottom: '20px' }}>
+              <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0, borderRadius: '6px', overflow: 'hidden' }}>
+                <iframe
+                  src={embedUrl}
+                  title={`${step.title} 영상`}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 'none' }}
+                />
+              </div>
             </div>
           )}
 

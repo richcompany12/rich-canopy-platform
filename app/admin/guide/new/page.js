@@ -14,6 +14,7 @@ export default function NewGuideStepPage() {
     content: '',
     caution: '',
     imagesText: '',
+    videoUrl: '',
   });
   const [saving, setSaving] = useState(false);
 
@@ -34,6 +35,7 @@ export default function NewGuideStepPage() {
       content: form.content,
       caution: form.caution,
       images,
+      videoUrl: form.videoUrl.trim(),
     });
 
     router.push('/admin/guide');
@@ -101,6 +103,16 @@ export default function NewGuideStepPage() {
               onChange={(e) => handleChange('imagesText', e.target.value)}
               style={{ ...inputStyle, minHeight: '80px', resize: 'vertical' }}
               placeholder="https://..."
+            />
+          </Field>
+
+          <Field label="유튜브 영상 링크 (선택)">
+            <input
+              type="text"
+              value={form.videoUrl}
+              onChange={(e) => handleChange('videoUrl', e.target.value)}
+              style={inputStyle}
+              placeholder="https://www.youtube.com/watch?v=..."
             />
           </Field>
 
