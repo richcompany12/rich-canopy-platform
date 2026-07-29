@@ -40,6 +40,7 @@ export default function Footer() {
         {[
           { label: 'CASES', href: '#cases' },
           { label: 'RAIN TEST', href: '#rain' },
+          { label: 'GUIDE', href: '/guide' },
           { label: 'FAQ', href: '/faq' },
           { label: 'CONTACT', href: '#contact' },
         ].map((item) => (
@@ -86,6 +87,20 @@ export default function Footer() {
               letterSpacing: '1px',
             }}>
             ❓ FAQ 공유
+          </button>
+          <button
+            onClick={() => shareLink('https://richcanopy.kr/guide', '리치캐노피 셀프 장착 가이드')}
+            style={{
+              backgroundColor: '#161b22',
+              border: '0.5px solid #21262D',
+              borderRadius: '4px',
+              color: '#8B949E',
+              fontSize: '11px',
+              padding: '8px 14px',
+              cursor: 'pointer',
+              letterSpacing: '1px',
+            }}>
+            📖 가이드 공유
           </button>
         </div>
       </div>

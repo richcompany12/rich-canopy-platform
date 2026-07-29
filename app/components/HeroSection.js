@@ -39,7 +39,7 @@ export default function HeroSection() {
         margin: '0 -24px -80px',
         padding: '60px 24px 80px',
       }}>
-        <div style={{ display: 'flex', gap: '12px' }}>
+        <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
           <a href="#cases" style={{
             backgroundColor: '#4FC3F7',
             color: '#111418',
@@ -49,6 +49,15 @@ export default function HeroSection() {
             letterSpacing: '1px',
             borderRadius: '2px',
           }}>EXPLORE</a>
+          <a href="/guide" style={{
+            border: '0.5px solid #4FC3F7',
+            color: '#4FC3F7',
+            padding: '12px 24px',
+            fontSize: '12px',
+            fontWeight: '700',
+            letterSpacing: '1px',
+            borderRadius: '2px',
+          }}>📖 셀프 장착 가이드</a>
           <a href="#contact" style={{
             border: '0.5px solid #8B949E',
             color: '#8B949E',

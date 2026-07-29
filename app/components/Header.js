@@ -56,6 +56,7 @@ export default function Header() {
          {[
   { label: 'CASES', href: '#cases' },
   { label: 'RAIN TEST', href: '#rain-test' },
+  { label: 'GUIDE', href: '/guide' },
   { label: 'FAQ', href: '/faq' },
   { label: 'CONTACT', href: '#contact' },
 ].map((item) => (
