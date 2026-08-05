@@ -22,6 +22,52 @@ function getYoutubeEmbedUrl(url) {
   }
 }
 
+// 설명 글(content) 안의 [사진1], [사진2] 표기를 실제 이미지로 바꿔서 렌더링
+function renderContentWithImages(content, images) {
+  if (!content) return null;
+  const parts = content.split(/(\[사진\d+\])/g);
+
+  return parts.map((part, i) => {
+    const match = part.match(/^\[사진(\d+)\]$/);
+
+    if (match) {
+      const idx = parseInt(match[1], 10) - 1;
+      const src = images[idx];
+      if (!src) {
+        return (
+          <div key={i} style={{
+            height: '160px', backgroundColor: '#0d1117', border: '1px dashed #21262D',
+            borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center',
+            color: '#484F58', fontSize: '13px', margin: '16px 0',
+          }}>
+            📷 사진 {idx + 1} 업로드 예정
+          </div>
+        );
+      }
+      return (
+        <div key={i} style={{ margin: '16px 0' }}>
+          <img
+            src={src}
+            alt={`사진 ${idx + 1}`}
+            style={{ width: '100%', aspectRatio: '1 / 1', objectFit: 'cover', borderRadius: '6px', display: 'block' }}
+          />
+          <p style={{ color: '#4FC3F7', fontSize: '12px', marginTop: '6px', textAlign: 'center' }}>
+            사진 {idx + 1}
+          </p>
+        </div>
+      );
+    }
+
+    if (!part.trim()) return null;
+
+    return (
+      <p key={i} style={{ color: '#8B949E', fontSize: '14.5px', lineHeight: '1.9', whiteSpace: 'pre-wrap' }}>
+        {part.trim()}
+      </p>
+    );
+  });
+}
+
 export default function GuidePage() {
   const [steps, setSteps] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -136,29 +182,8 @@ export default function GuidePage() {
             PART {current + 1}. {step.title}
           </h2>
 
-          {/* 이미지 영역 */}
-          {images.length > 0 ? (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginBottom: '20px' }}>
-              {images.map((src, i) => (
-                <div key={i}>
-                  <img
-                    src={src}
-                    alt={`${step.title} 사진${i + 1}`}
-                    style={{
-                      width: '100%',
-                      aspectRatio: '4 / 3',
-                      objectFit: 'cover',
-                      borderRadius: '6px',
-                      display: 'block',
-                    }}
-                  />
-                  <p style={{ color: '#4FC3F7', fontSize: '12px', marginTop: '6px', textAlign: 'center' }}>
-                    사진 {i + 1}
-                  </p>
-                </div>
-              ))}
-            </div>
-          ) : (
+          {/* 이미지가 아직 하나도 없고, 본문에도 사진 태그가 없는 경우에만 안내 표시 */}
+          {images.length === 0 && !isPending && (
             <div style={{
               height: '180px',
               backgroundColor: '#0d1117',
@@ -190,7 +215,7 @@ export default function GuidePage() {
             </div>
           )}
 
-          {/* 본문 */}
+          {/* 본문 (글 중간중간 [사진N] 자리에 실제 사진이 삽입됨) */}
           {isPending ? (
             <p style={{ color: '#8B949E', fontSize: '14px', lineHeight: '1.8' }}>
               이 단계는 아직 상세 내용을 준비 중입니다. 조립 중 궁금한 점이 있으면
@@ -198,12 +223,9 @@ export default function GuidePage() {
             </p>
           ) : (
             <>
-              <p style={{
-                color: '#8B949E', fontSize: '14.5px',
-                lineHeight: '1.9', whiteSpace: 'pre-wrap', marginBottom: step.caution ? '18px' : 0,
-              }}>
-                {step.content}
-              </p>
+              <div style={{ marginBottom: step.caution ? '18px' : 0, display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                {renderContentWithImages(step.content, images)}
+              </div>
 
               {step.caution && (
                 <div style={{

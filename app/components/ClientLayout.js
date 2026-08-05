@@ -1,5 +1,6 @@
 'use client';
 import Header from "./Header";
+import PopupManager from "./PopupManager";
 import { usePathname } from "next/navigation";
 
 export default function ClientLayout({ children }) {
@@ -9,6 +10,7 @@ export default function ClientLayout({ children }) {
   return (
     <>
       {!isAdmin && <Header />}
+      {!isAdmin && <PopupManager />}
       {children}
     </>
   );

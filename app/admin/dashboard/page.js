@@ -58,6 +58,8 @@ export default function Dashboard() {
           { label: '작업 스케줄', desc: '예약 및 일정 관리', href: '/admin/schedule' },
           { label: 'FAQ 관리', desc: '자주 묻는 질문 등록 / 수정 / 삭제', href: '/admin/faq' },
           { label: '작업 노트', desc: '나만의 작업 노하우 보관', href: '/admin/notes' },
+          { label: '장착 가이드 관리', desc: '단계 추가 / 수정 / 삭제 / 순서변경', href: '/admin/guide' },
+          { label: '팝업 관리', desc: '노출기간 / 순서 / 링크 설정', href: '/admin/popups' },
         ].map((item) => (
           <a key={item.label} href={item.href} style={{
             backgroundColor: '#161b22',
