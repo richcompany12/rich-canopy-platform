@@ -54,17 +54,28 @@ export default function Header() {
           zIndex: 99,
         }}>
          {[
-  { label: 'CASES', href: '#cases' },
-  { label: 'RAIN TEST', href: '#rain-test' },
-  { label: 'GUIDE', href: '/guide' },
-  { label: 'FAQ', href: '/faq' },
-  { label: 'CONTACT', href: '#contact' },
+  { label: 'CASES', sub: '작업사례', href: '#cases' },
+  { label: 'RAIN TEST', sub: '우천 테스트', href: '#rain-test' },
+  { label: 'GUIDE', sub: '셀프 장착가이드', href: '/guide' },
+  { label: 'INSTALLERS', sub: '전국 장착점 안내', href: '/installers' },
+  { label: 'FAQ', sub: '자주묻는질문', href: '/faq' },
+  { label: 'CONTACT', sub: '문의하기', href: '#contact' },
 ].map((item) => (
   <a key={item.label} href={item.href} onClick={() => setOpen(false)} style={{
     color: '#8B949E',
     fontSize: '13px',
     letterSpacing: '2px',
-  }}>{item.label}</a>
+    display: 'flex',
+    alignItems: 'baseline',
+    gap: '8px',
+  }}>
+    {item.label}
+    {item.sub && (
+      <span style={{ color: '#484F58', fontSize: '11px', letterSpacing: '0px' }}>
+        {item.sub}
+      </span>
+    )}
+  </a>
 ))}
         <a href="/admin" onClick={() => setOpen(false)} style={{
   color: '#484F58',

@@ -139,7 +139,7 @@ function EditGuideStepForm() {
             />
           </Field>
 
-          <Field label="사진 URL (한 줄에 하나씩 입력)">
+          <Field label="사진 URL (한 줄에 하나씩 입력) 정사각형 1200×1200 이미지 권장">
             <textarea
               value={form.imagesText}
               onChange={(e) => handleChange('imagesText', e.target.value)}

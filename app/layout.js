@@ -1,5 +1,6 @@
 import "./globals.css";
 import ClientLayout from "./components/ClientLayout";
+import Script from 'next/script';
 
 export const metadata = {
   title: "리치캐노피 - PCX 캐노피 NMAX 캐노피 오토바이 지붕 전문",
@@ -39,6 +40,10 @@ return (
       <meta name="naver-site-verification" content="45d311eecaf2efae3eff4de1573d00781843f6ca" />
     </head>
     <body style={{ backgroundColor: '#111418', minHeight: '100vh' }}>
+      <Script
+   src={`https://dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_MAP_KEY}&autoload=false&libraries=services`}
+  strategy="beforeInteractive"
+/>
       <ClientLayout>{children}</ClientLayout>
     </body>
   </html>
