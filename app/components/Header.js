@@ -54,12 +54,11 @@ export default function Header() {
           zIndex: 99,
         }}>
          {[
-  { label: 'CASES', sub: '작업사례', href: '#cases' },
-  { label: 'RAIN TEST', sub: '우천 테스트', href: '#rain-test' },
+  { label: 'CASES', sub: '작업사례', href: '/#cases' },
   { label: 'GUIDE', sub: '셀프 장착가이드', href: '/guide' },
   { label: 'INSTALLERS', sub: '전국 장착점 안내', href: '/installers' },
   { label: 'FAQ', sub: '자주묻는질문', href: '/faq' },
-  { label: 'CONTACT', sub: '문의하기', href: '#contact' },
+  { label: 'CONTACT', sub: '문의하기', href: '/#contact' },
 ].map((item) => (
   <a key={item.label} href={item.href} onClick={() => setOpen(false)} style={{
     color: '#8B949E',

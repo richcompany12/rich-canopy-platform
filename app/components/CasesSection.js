@@ -24,7 +24,7 @@ export default function CasesSection() {
   }, []);
 
   return (
-    <section style={{ backgroundColor: '#111418', padding: '60px 24px' }}>
+    <section id="cases" style={{ backgroundColor: '#111418', padding: '60px 24px' }}>
 
       <div style={{ marginBottom: '32px' }}>
         <p style={{

@@ -90,26 +90,45 @@ export default function AdminInstallersPage() {
                 {installer.status}
               </span>
               <span style={{ fontSize: '11px', color: '#8B949E' }}>{installer.tier}</span>
+              <span style={{ fontSize: '11px', color: '#484F58' }}>
+                사진 {(installer.photos || []).length}장
+              </span>
             </div>
             <div style={{ color: '#8B949E', fontSize: '13px', marginTop: '4px' }}>
               {installer.address}
             </div>
           </div>
 
-          <button
-            onClick={() => handleDelete(installer.id, installer.name)}
-            style={{
-              background: 'none',
-              border: '1px solid #30363d',
-              color: '#ff6b6b',
-              borderRadius: '6px',
-              padding: '6px 12px',
-              cursor: 'pointer',
-              fontSize: '13px',
-            }}
-          >
-            삭제
-          </button>
+          <div style={{ display: 'flex', gap: '8px' }}>
+            <Link
+              href={`/admin/installers/edit?id=${installer.id}`}
+              style={{
+                background: 'none',
+                border: '1px solid #30363d',
+                color: '#4FC3F7',
+                borderRadius: '6px',
+                padding: '6px 12px',
+                fontSize: '13px',
+                textDecoration: 'none',
+              }}
+            >
+              수정
+            </Link>
+            <button
+              onClick={() => handleDelete(installer.id, installer.name)}
+              style={{
+                background: 'none',
+                border: '1px solid #30363d',
+                color: '#ff6b6b',
+                borderRadius: '6px',
+                padding: '6px 12px',
+                cursor: 'pointer',
+                fontSize: '13px',
+              }}
+            >
+              삭제
+            </button>
+          </div>
         </div>
       ))}
     </div>

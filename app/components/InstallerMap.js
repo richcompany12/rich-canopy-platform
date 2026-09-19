@@ -4,14 +4,13 @@
 import { useEffect, useRef, useState } from 'react';
 
 // installers 배열 형식 예시:
-// [{ id, name, lat, lng, bikes: [{ bikeId, bikeName, thumbnailUrl }] }]
+// [{ id, name, lat, lng, photos: ["url1", "url2", ...] }]
 
 export default function InstallerMap({ installers = [] }) {
   const mapContainerRef = useRef(null);
   const [selectedInstaller, setSelectedInstaller] = useState(null);
 
   useEffect(() => {
-    // 카카오 SDK가 아직 로드 안됐으면 잠깐 기다렸다가 재시도
     const initMap = () => {
       if (!window.kakao || !window.kakao.maps) {
         setTimeout(initMap, 300);
@@ -19,10 +18,10 @@ export default function InstallerMap({ installers = [] }) {
       }
 
       window.kakao.maps.load(() => {
-        const center = new window.kakao.maps.LatLng(36.5, 127.8); // 대한민국 중심 대략 좌표
+        const center = new window.kakao.maps.LatLng(36.5, 127.8);
         const map = new window.kakao.maps.Map(mapContainerRef.current, {
           center,
-          level: 12, // 숫자가 클수록 넓게 보임(전국 단위는 11~13 추천)
+          level: 12,
         });
 
         installers.forEach((installer) => {
@@ -54,7 +53,7 @@ export default function InstallerMap({ installers = [] }) {
         }}
       />
 
-      {/* 핀 클릭시 간략 정보 카드 */}
+      {/* 핀 클릭시 장착점 정보 + 대표사진 갤러리 카드 */}
       {selectedInstaller && (
         <div
           style={{
@@ -62,17 +61,36 @@ export default function InstallerMap({ installers = [] }) {
             bottom: '16px',
             left: '16px',
             right: '16px',
-            maxWidth: '320px',
+            maxWidth: '360px',
             background: '#161b22',
             border: '1px solid #30363d',
             borderRadius: '10px',
             padding: '16px',
             color: '#F0F6FC',
             zIndex: 10,
+            maxHeight: '360px',
+            overflowY: 'auto',
           }}
         >
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <strong style={{ fontSize: '16px' }}>{selectedInstaller.name}</strong>
+            <div>
+              <strong style={{ fontSize: '16px' }}>{selectedInstaller.name}</strong>
+              {selectedInstaller.tier === '총판' && (
+                <span
+                  style={{
+                    marginLeft: '6px',
+                    fontSize: '10px',
+                    padding: '2px 6px',
+                    borderRadius: '4px',
+                    background: '#4FC3F7',
+                    color: '#0d1117',
+                    fontWeight: 'bold',
+                  }}
+                >
+                  총판
+                </span>
+              )}
+            </div>
             <button
               onClick={() => setSelectedInstaller(null)}
               style={{ background: 'none', border: 'none', color: '#8B949E', cursor: 'pointer' }}
@@ -81,27 +99,46 @@ export default function InstallerMap({ installers = [] }) {
             </button>
           </div>
 
-          <div style={{ display: 'flex', gap: '8px', marginTop: '12px', flexWrap: 'wrap' }}>
-            {(selectedInstaller.bikes || []).map((bike) => (
-              <div
-                key={bike.bikeId}
-                style={{ textAlign: 'center', cursor: 'pointer' }}
-                onClick={() => {
-                  // TODO: 다음 단계에서 상세 모달/페이지 연결
-                  console.log('상세보기 클릭:', bike.bikeId);
+          {selectedInstaller.address && (
+            <p style={{ color: '#8B949E', fontSize: '12px', marginTop: '4px' }}>
+              {selectedInstaller.address}
+            </p>
+          )}
+          {selectedInstaller.phone && (
+            <p style={{ color: '#8B949E', fontSize: '12px', marginTop: '2px' }}>
+              {selectedInstaller.phone}
+            </p>
+          )}
+
+          {/* 대표사진 갤러리 */}
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(3, 1fr)',
+              gap: '6px',
+              marginTop: '12px',
+            }}
+          >
+            {(selectedInstaller.photos || []).map((url, idx) => (
+              <img
+                key={idx}
+                src={url}
+                alt={`${selectedInstaller.name} 사진 ${idx + 1}`}
+                style={{
+                  width: '100%',
+                  aspectRatio: '1 / 1',
+                  objectFit: 'cover',
+                  borderRadius: '6px',
                 }}
-              >
-                <img
-                  src={bike.thumbnailUrl}
-                  alt={bike.bikeName}
-                  style={{ width: '64px', height: '64px', objectFit: 'cover', borderRadius: '8px' }}
-                />
-                <div style={{ fontSize: '12px', color: '#8B949E', marginTop: '4px' }}>
-                  {bike.bikeName}
-                </div>
-              </div>
+              />
             ))}
           </div>
+
+          {(!selectedInstaller.photos || selectedInstaller.photos.length === 0) && (
+            <p style={{ color: '#484F58', fontSize: '12px', marginTop: '12px' }}>
+              등록된 사진이 없습니다.
+            </p>
+          )}
         </div>
       )}
     </div>
