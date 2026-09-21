@@ -15,10 +15,10 @@ export const metadata = {
 const PLAY_URL = 'https://play.google.com/store/apps/details?id=com.richcompany.smartridernative3';
 
 const IMG = {
-  toast: null,     // 토스트 (주황 테두리 상태면 더 좋음)
-  shortcut: null,  // 등록 화면 단축 버튼 줄
-  map: null,       // 지도 화면
-  alert: null,     // 강력알림 화면
+  toast: '/smartrider/toast.jpg',
+  shortcut: '/smartrider/buttons.jpg',
+  map: '/smartrider/map.jpg',
+  alert: '/smartrider/alert.jpg',
 };
 
 const C = {
@@ -89,7 +89,7 @@ function Tip({ children }) {
 
 function Shot({ src, label, alt }) {
   if (src) {
-    return <img src={src} alt={alt} loading="lazy" style={{ width: '100%', display: 'block', borderRadius: 14, border: `1px solid ${C.line}`, margin: '4px 0 16px' }} />;
+    return <img src={src} alt={alt} loading="lazy" style={{ width: '100%', maxWidth: 300, display: 'block', borderRadius: 14, border: `1px solid ${C.line}`, margin: '4px auto 16px' }} />
   }
   return (
     <div style={{

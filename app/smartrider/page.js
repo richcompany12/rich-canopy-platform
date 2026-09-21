@@ -1,30 +1,31 @@
 // app/smartrider/page.js
 // 스마트라이더 소개 페이지 — 명함 QR로 들어오는 라이더용
 // 주소: https://richcanopy.kr/smartrider/
+// 사용설명서: app/smartrider/guide/page.js (https://richcanopy.kr/smartrider/guide/)
 //
-// 이미지 넣는 법:
-//   1. 채실장 이미지를 public/smartrider/ 폴더에 넣는다 (예: public/smartrider/toast.jpg)
-//   2. 아래 IMG 에서 null 을 '/smartrider/toast.jpg' 처럼 바꾼다
-//   3. npm run build → firebase deploy --only hosting
+// 이미지: public/smartrider/ 폴더의 JPG를 아래 IMG 에서 연결
+// 배포: npm run build → firebase deploy --only hosting
 
 export const metadata = {
   title: '스마트라이더 — 건물이 먼저 알려주는 라이더 앱',
-  description: '도착하면 내가 적어둔 건물 메모가 배달앱 위에 자동으로 뜹니다. 메모는 서버가 아닌 내 폰에만 저장됩니다.',
+  description: '자주 가는 건물에 메모를 남겨두면, 도착할 때 먼저 띄워드립니다. 내 메모는 내 폰에만 저장됩니다.',
   openGraph: {
     title: '스마트라이더 — 건물이 먼저 알려주는 라이더 앱',
     description: '한 번 간 건물, 다음엔 헤매지 마세요. 건물이 먼저 알려줍니다.',
-    // images: ['/smartrider/og.jpg'],   // 카톡 공유 미리보기 이미지 (1200x630) 생기면 주석 해제
+        images: ['https://richcanopy.kr/smartrider/og.jpg'],
   },
 };
 
 const PLAY_URL = 'https://play.google.com/store/apps/details?id=com.richcompany.smartridernative3';
 
-// 채실장 이미지 — 생기면 경로로 교체
+// 스토어 스크린샷과 같은 이미지 (웹용 JPG, public/smartrider/ 에 저장)
+// 파일이 아직 없으면 해당 줄을 null 로 바꾸면 회색 자리로 보인다
 const IMG = {
-  toast: null,   // 이미지 2: 토스트 확대 (건물 이름 + 메모)
-  map: null,     // 이미지 3: 상세 화면 (동 배치도)
-  alert: null,   // 이미지 4: 후면카메라 안전 알림
-  safe: null,    // 이미지 5: 폰 + 자물쇠 (서버에 저장 안 함)
+  toast: '/smartrider/toast.jpg',       // 도착하면, 내 메모가 먼저 뜹니다
+  map: '/smartrider/map.jpg',           // 내 건물을 지도에서 한눈에
+  alert: '/smartrider/alert.jpg',       // 후면 단속 구간, 미리 알려드려요
+  buttons: '/smartrider/buttons.jpg',   // 자주 쓰는 말은 나만의 버튼으로
+  safe: '/smartrider/safe.jpg',         // 내 메모는 내 폰에만
 };
 
 const C = {
@@ -48,13 +49,13 @@ function Slot({ src, label, alt }) {
         src={src}
         alt={alt}
         loading="lazy"
-        style={{ width: '100%', display: 'block', borderRadius: 14, border: `1px solid ${C.line}` }}
+        style={{ width: '100%', maxWidth: 340, margin: '0 auto', display: 'block', borderRadius: 14, border: `1px solid ${C.line}` }}
       />
     );
   }
   return (
     <div style={{
-      width: '100%', aspectRatio: '4 / 5', borderRadius: 14,
+      width: '100%', maxWidth: 340, margin: '0 auto', aspectRatio: '9 / 16', borderRadius: 14,
       border: `2px dashed ${C.line}`, background: '#F1F3F2',
       display: 'flex', alignItems: 'center', justifyContent: 'center',
       color: '#98A29E', fontSize: 13, textAlign: 'center', padding: 20,
@@ -113,7 +114,7 @@ export default function SmartRiderLanding() {
               한 번 간 건물,<br />다음엔 헤매지 마세요.<br />건물이 먼저 알려줍니다.
             </h1>
             <p style={{ fontSize: 16, lineHeight: 1.65, opacity: 0.9, margin: '0 0 30px' }}>
-              한 번 적어두면, 다음부터는 도착하는 순간<br />배달앱 화면 위에 내 메모가 뜹니다.
+              자주 가는 건물에 메모를 남겨두면,<br />도착하는 순간 쓰던 앱 화면 위에 먼저 뜹니다.
             </p>
 
             {/* 코드로 그린 폰 — 흐린 배달앱 위로 토스트가 올라온다 */}
@@ -132,17 +133,17 @@ export default function SmartRiderLanding() {
                   <div style={{ height: 38, background: '#C3C9C7', borderRadius: 8 }} />
                 </div>
                 {/* 우리 토스트 */}
-                <div className="sr-toast" role="img" aria-label="스마트라이더 알림 예시: 하늘마을 103동, 후문 쪽 입구가 빠름" style={{
+                <div className="sr-toast" role="img" aria-label="스마트라이더 알림 예시: 샘플오피스텔, 후문 계단이 빨라요" style={{
                   position: 'absolute', left: 10, right: 10, bottom: 18,
                   background: '#fff', borderRadius: 14, padding: '14px 14px 12px',
                   boxShadow: '0 10px 30px rgba(4,56,46,0.28)', color: C.ink,
                 }}>
                   <div style={{ fontSize: 12, color: C.green, fontWeight: 700, marginBottom: 6 }}>도착 · 20m</div>
-                  <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 8 }}>하늘마을 103동</div>
+                  <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 8 }}>샘플오피스텔</div>
                   <div style={{ fontSize: 19, fontWeight: 800, color: C.green, lineHeight: 1.35 }}>
-                    후문 쪽 입구가 빠름
+                    후문 계단이 빨라요
                   </div>
-                  <div style={{ fontSize: 12.5, color: C.sub, marginTop: 6 }}>경비실은 정문 왼쪽 · 엘베 2대</div>
+                  <div style={{ fontSize: 12.5, color: C.sub, marginTop: 6 }}>엘베는 안쪽 두 번째</div>
                 </div>
               </div>
             </div>
@@ -154,8 +155,8 @@ export default function SmartRiderLanding() {
           <h2 style={{ fontSize: 25, fontWeight: 800, lineHeight: 1.35, margin: '0 0 22px' }}>이런 적 있죠?</h2>
           {[
             '도착해서 요청사항 다시 열어보기',
-            '동 번호가 안 보여서 단지 한 바퀴',
-            '지난주에 왔던 건물인데 입구가 기억 안 남',
+            '동 입구가 어디였더라, 단지 한 바퀴',
+            '지난번에 후문이 빨랐는데… 어디였지',
           ].map((t) => (
             <p key={t} style={{
               fontSize: 16.5, lineHeight: 1.5, margin: '0 0 12px', padding: '14px 16px',
@@ -173,24 +174,31 @@ export default function SmartRiderLanding() {
         <section style={{ ...wrap, paddingTop: 44 }}>
           <Feature
             title="도착하면 내 메모가 먼저 뜹니다"
-            body="자주 가는 건물에 나만의 메모를 한 번 적어두세요. 입구 위치, 가는 길, 주의할 점처럼 다음에 알고 싶은 것들요. 다음에 근처에 가면 배달앱을 보고 있어도 그 위에 바로 떠요. 폰을 꺼내 뒤질 필요가 없습니다."
+            body="자주 가는 건물에 메모를 한 번 남겨두세요. 다음에 근처에 가면 쓰던 앱 화면 위에 바로 떠요. 폰을 꺼내 뒤질 필요가 없습니다."
             img={IMG.toast}
-            label="이미지 2 — 토스트 확대"
-            alt="배달앱 위에 뜬 스마트라이더 건물 메모 알림"
+            label="토스트 이미지"
+            alt="다른 앱 화면 위에 뜬 스마트라이더 도착 메모"
           />
           <Feature
-            title="동 배치도와 샛길까지"
-            body="처음 가는 대단지도 배치도를 보고 바로 찾아가세요. 후문, 지하 통로 같은 나만 아는 길도 적어둘 수 있어요."
+            title="내 건물을 지도에서 한눈에"
+            body="등록한 건물이 지도에 모여 보입니다. 샛길, 동 배치 같은 나만 아는 정보도 건물마다 적어둘 수 있어요."
             img={IMG.map}
-            label="이미지 3 — 동 배치도 화면"
-            alt="아파트 단지 동 배치도가 표시된 상세 화면"
+            label="지도 이미지"
+            alt="등록한 건물이 지도에 묶음으로 표시된 화면"
           />
           <Feature
             title="후면 단속 구간, 미리 알려드려요"
-            body="이륜차 후면번호판 단속 카메라 구간에 가까워지면 소리로 알려드립니다. 헬멧을 쓰고 있어도 들리게 만들었어요. 안전운전에 집중하세요."
+            body="이륜차 후면번호판 단속 구간에 가까워지면 소리로 알려드립니다. 헬멧을 쓰고 있어도 들리게 만들었어요. 안전운전에 집중하세요."
             img={IMG.alert}
-            label="이미지 4 — 안전 알림 화면"
+            label="안전 알림 이미지"
             alt="후면 단속 구간 안전 알림 화면"
+          />
+          <Feature
+            title="자주 쓰는 말은 나만의 버튼으로"
+            body="버튼을 길게 눌러 원하는 말로 바꾸세요. 한 번 누르면 바로 입력됩니다. 장갑 낀 손으로도 빠르게."
+            img={IMG.buttons}
+            label="단축 버튼 이미지"
+            alt="건물 등록 화면의 나만의 단축 버튼"
           />
         </section>
 
@@ -207,7 +215,7 @@ export default function SmartRiderLanding() {
             <p style={{ fontSize: 16, lineHeight: 1.75, color: C.ink, margin: '0 0 22px' }}>
               폰을 바꿀 땐 내가 정한 비밀번호로 잠긴 백업 파일로 옮기면 됩니다.
             </p>
-            <Slot src={IMG.safe} label="이미지 5 — 폰 + 자물쇠" alt="내 메모가 폰 안에만 저장된다는 안내 그림" />
+            <Slot src={IMG.safe} label="안심 이미지" alt="메모가 폰 안에만 저장된다는 안내 그림" />
           </div>
         </section>
 
@@ -216,8 +224,8 @@ export default function SmartRiderLanding() {
           <h2 style={{ fontSize: 25, fontWeight: 800, margin: '0 0 22px' }}>3분이면 시작</h2>
           {[
             ['설치하고 로그인', '이메일로 가입합니다.'],
-            ['권한 3가지 허용', '위치는 꼭 "항상 허용"으로 골라주세요. 그래야 배달앱을 보고 있을 때도 알림이 떠요.'],
-            ['자주 가는 건물 등록', '오늘 간 건물부터 하나씩. 쌓일수록 편해집니다.'],
+            ['권한 3가지 허용', '위치는 꼭 "항상 허용"으로 골라주세요. 휴대폰 설정에서 스마트라이더의 배터리를 "제한 없음"으로 해두면 더 제때 떠요.'],
+            ['자주 가는 건물 등록', '오늘 간 건물부터 하나씩. 쌓일수록 빛을 발합니다.'],
           ].map(([t, d], i) => (
             <div key={t} style={{ display: 'flex', gap: 16, marginBottom: 22 }}>
               <div style={{
@@ -241,15 +249,15 @@ export default function SmartRiderLanding() {
           </a>
         </section>
 
-        {/* ── 선착순 ───────────────────────────────── */}
+        {/* ── 무료 안내 ────────────────────────────── */}
         <section style={{ ...wrap, paddingTop: 20 }}>
           <div style={{ border: `2px solid ${C.orange}`, borderRadius: 16, padding: '24px 22px', background: '#fff' }}>
-            <div style={{ fontSize: 30, fontWeight: 800, color: C.orange, lineHeight: 1.2, marginBottom: 10 }}>
-              먼저 타는 분께
+            <div style={{ fontSize: 34, fontWeight: 800, color: C.orange, lineHeight: 1.1, marginBottom: 10 }}>
+              지금은 전부 무료
             </div>
-            <div style={{ fontSize: 19, fontWeight: 700, marginBottom: 8 }}>초기 라이더 혜택</div>
             <p style={{ fontSize: 15, color: C.sub, lineHeight: 1.65, margin: 0 }}>
-              동탄·병점 라이더분들께 먼저 드립니다. 초기에 함께해 주시는 분들께는 도착 알림을 일정 기간 무료로 드려요.
+              도착 메모 자동 표시 기능은 추후 월 구독으로 바뀔 예정이에요.
+              먼저 시작하신 분들께는 무료 기간을 드립니다.
               써보시고 불편한 점을 알려주시면 바로 고칩니다.
             </p>
           </div>
@@ -270,12 +278,12 @@ export default function SmartRiderLanding() {
             평소 쓰시던 것과 크게 차이 없습니다. 아주 조금 차이가 있을 수 있지만, 크게 못 느끼실 거예요.
           </Faq>
           <Faq q="돈이 드나요?">
-            건물 등록·검색·백업 같은 기본 기능은 무료입니다. 도착 알림은 앞으로 월 구독으로 바뀔 예정이며,
-            초기에 함께한 분들께는 일정 기간 무료로 드립니다. 앱 안에 광고가 나올 수 있지만,
+            지금은 모든 기능이 무료입니다. 도착 메모 자동 표시는 추후 월 구독으로 바뀔 예정이며,
+            먼저 시작하신 분들께는 무료 기간을 드립니다. 앱 안에 광고가 나올 수 있지만,
             달리는 중에 보는 화면에는 광고를 넣지 않습니다.
           </Faq>
           <Faq q="내 메모, 다른 사람이 볼 수 있나요?">
-            메모는 서버로 보내지 않고 내 폰에만 저장됩니다. 만든 저희도 볼 수 없고, 서버에 없으니 해킹될 것도 없습니다.
+            메모는 서버로 보내지 않고 내 폰에만 저장됩니다. 만든 저희도 볼 수 없고, 서버에 없으니 새어나갈 곳도 없습니다.
             백업 파일도 내가 정한 비밀번호로 잠겨서, 파일만으로는 열 수 없습니다.
           </Faq>
           <Faq q="메모에는 뭘 적으면 되나요?">
