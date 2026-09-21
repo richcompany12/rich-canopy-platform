@@ -10,7 +10,7 @@ export default function ClientLayout({ children }) {
 
   return (
     <>
-      {!isAdmin && <Header />}
+      {!isAdmin && !isSmartRider && <Header />}
       {!isAdmin && !isSmartRider && <PopupManager />}
       {children}
     </>

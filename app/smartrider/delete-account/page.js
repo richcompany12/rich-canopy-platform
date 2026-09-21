@@ -26,6 +26,10 @@ export default function SmartRiderDeleteAccount() {
     <main style={{ backgroundColor: '#0d1117', minHeight: '100vh', padding: '60px 20px' }}>
       <div style={{ maxWidth: '720px', margin: '0 auto' }}>
 
+        <a href="/smartrider/" style={{ color: '#8B949E', fontSize: '13px', textDecoration: 'none' }}>  {/* ★ 새 줄 */}
+          ← 스마트라이더                                                                              {/* ★ 새 줄 */}
+        </a>                                                                                          {/* ★ 새 줄 */}
+
         <div style={{ textAlign: 'center', marginBottom: '48px' }}>
           <p style={{ color: '#4FC3F7', fontSize: '12px', letterSpacing: '3px', marginBottom: '12px' }}>
             SMARTRIDER

@@ -1,0 +1,317 @@
+// app/smartrider/page.js
+// 스마트라이더 소개 페이지 — 명함 QR로 들어오는 라이더용
+// 주소: https://richcanopy.kr/smartrider/
+//
+// 이미지 넣는 법:
+//   1. 채실장 이미지를 public/smartrider/ 폴더에 넣는다 (예: public/smartrider/toast.jpg)
+//   2. 아래 IMG 에서 null 을 '/smartrider/toast.jpg' 처럼 바꾼다
+//   3. npm run build → firebase deploy --only hosting
+
+export const metadata = {
+  title: '스마트라이더 — 건물이 먼저 알려주는 라이더 앱',
+  description: '도착하면 내가 적어둔 건물 메모가 배달앱 위에 자동으로 뜹니다. 메모는 서버가 아닌 내 폰에만 저장됩니다.',
+  openGraph: {
+    title: '스마트라이더 — 건물이 먼저 알려주는 라이더 앱',
+    description: '한 번 간 건물, 다음엔 헤매지 마세요. 건물이 먼저 알려줍니다.',
+    // images: ['/smartrider/og.jpg'],   // 카톡 공유 미리보기 이미지 (1200x630) 생기면 주석 해제
+  },
+};
+
+const PLAY_URL = 'https://play.google.com/store/apps/details?id=com.richcompany.smartridernative3';
+
+// 채실장 이미지 — 생기면 경로로 교체
+const IMG = {
+  toast: null,   // 이미지 2: 토스트 확대 (건물 이름 + 메모)
+  map: null,     // 이미지 3: 상세 화면 (동 배치도)
+  alert: null,   // 이미지 4: 후면카메라 안전 알림
+  safe: null,    // 이미지 5: 폰 + 자물쇠 (서버에 저장 안 함)
+};
+
+const C = {
+  green: '#075B4B',
+  greenDeep: '#04382E',
+  greenSoft: '#E4EFEB',
+  ivory: '#FBFAF7',
+  ink: '#1C2321',
+  sub: '#55605C',
+  line: '#DCE3E0',
+  orange: '#F28C28',
+  red: '#C0392B',
+};
+
+const wrap = { maxWidth: 480, margin: '0 auto', padding: '0 22px' };
+
+function Slot({ src, label, alt }) {
+  if (src) {
+    return (
+      <img
+        src={src}
+        alt={alt}
+        loading="lazy"
+        style={{ width: '100%', display: 'block', borderRadius: 14, border: `1px solid ${C.line}` }}
+      />
+    );
+  }
+  return (
+    <div style={{
+      width: '100%', aspectRatio: '4 / 5', borderRadius: 14,
+      border: `2px dashed ${C.line}`, background: '#F1F3F2',
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      color: '#98A29E', fontSize: 13, textAlign: 'center', padding: 20,
+    }}>
+      {label}
+    </div>
+  );
+}
+
+function Feature({ title, body, img, label, alt }) {
+  return (
+    <div style={{ marginBottom: 44 }}>
+      <h3 style={{ fontSize: 21, fontWeight: 700, color: C.ink, lineHeight: 1.35, margin: '0 0 8px' }}>
+        {title}
+      </h3>
+      <p style={{ fontSize: 15.5, color: C.sub, lineHeight: 1.7, margin: '0 0 16px' }}>{body}</p>
+      <Slot src={img} label={label} alt={alt} />
+    </div>
+  );
+}
+
+function Faq({ q, children }) {
+  return (
+    <details className="sr-faq">
+      <summary>{q}</summary>
+      <div style={{ padding: '0 2px 18px', fontSize: 15, color: C.sub, lineHeight: 1.7 }}>{children}</div>
+    </details>
+  );
+}
+
+export default function SmartRiderLanding() {
+  return (
+    <div style={{ background: C.ivory, color: C.ink, minHeight: '100vh', paddingBottom: 96 }}>
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+      <style>{`
+        .sr-root, .sr-root * { font-family: 'Pretendard', -apple-system, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif; box-sizing: border-box; }
+        .sr-toast { animation: srUp 0.7s cubic-bezier(.2,.8,.2,1) 0.9s both; }
+        @keyframes srUp { from { transform: translateY(40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        @media (prefers-reduced-motion: reduce) { .sr-toast { animation: none; } }
+        .sr-faq { border-top: 1px solid ${C.line}; }
+        .sr-faq:last-child { border-bottom: 1px solid ${C.line}; }
+        .sr-faq summary { list-style: none; cursor: pointer; padding: 18px 28px 18px 2px; font-size: 16px; font-weight: 600; color: ${C.ink}; position: relative; }
+        .sr-faq summary::-webkit-details-marker { display: none; }
+        .sr-faq summary::after { content: '+'; position: absolute; right: 4px; top: 14px; font-size: 22px; font-weight: 400; color: ${C.green}; }
+        .sr-faq[open] summary::after { content: '−'; }
+        .sr-cta:focus-visible, .sr-faq summary:focus-visible { outline: 3px solid ${C.orange}; outline-offset: 3px; }
+      `}</style>
+
+      <div className="sr-root">
+
+        {/* ── 첫 화면 ───────────────────────────────── */}
+        <section style={{ background: C.green, color: '#fff', paddingTop: 44, overflow: 'hidden' }}>
+          <div style={wrap}>
+            <p style={{ fontSize: 15, fontWeight: 600, opacity: 0.85, margin: '0 0 14px' }}>스마트라이더</p>
+            <h1 style={{ fontSize: 34, fontWeight: 800, lineHeight: 1.25, letterSpacing: '-0.02em', margin: '0 0 14px' }}>
+              한 번 간 건물,<br />다음엔 헤매지 마세요.<br />건물이 먼저 알려줍니다.
+            </h1>
+            <p style={{ fontSize: 16, lineHeight: 1.65, opacity: 0.9, margin: '0 0 30px' }}>
+              한 번 적어두면, 다음부터는 도착하는 순간<br />배달앱 화면 위에 내 메모가 뜹니다.
+            </p>
+
+            {/* 코드로 그린 폰 — 흐린 배달앱 위로 토스트가 올라온다 */}
+            <div style={{
+              width: 260, margin: '0 auto', height: 330, background: '#10201C',
+              borderRadius: '34px 34px 0 0', padding: '14px 12px 0', position: 'relative',
+              boxShadow: '0 -2px 0 2px #0A1512 inset',
+            }}>
+              <div style={{ background: '#E9ECEB', borderRadius: '24px 24px 0 0', height: '100%', padding: 16, position: 'relative', overflow: 'hidden' }}>
+                {/* 흐린 배달앱 */}
+                <div aria-hidden="true" style={{ filter: 'blur(1.5px)', opacity: 0.7 }}>
+                  <div style={{ height: 14, width: '55%', background: '#C9CFCD', borderRadius: 4, marginBottom: 14 }} />
+                  <div style={{ height: 90, background: '#D5DAD8', borderRadius: 10, marginBottom: 12 }} />
+                  <div style={{ height: 10, width: '80%', background: '#C9CFCD', borderRadius: 4, marginBottom: 8 }} />
+                  <div style={{ height: 10, width: '65%', background: '#C9CFCD', borderRadius: 4, marginBottom: 16 }} />
+                  <div style={{ height: 38, background: '#C3C9C7', borderRadius: 8 }} />
+                </div>
+                {/* 우리 토스트 */}
+                <div className="sr-toast" role="img" aria-label="스마트라이더 알림 예시: 하늘마을 103동, 후문 쪽 입구가 빠름" style={{
+                  position: 'absolute', left: 10, right: 10, bottom: 18,
+                  background: '#fff', borderRadius: 14, padding: '14px 14px 12px',
+                  boxShadow: '0 10px 30px rgba(4,56,46,0.28)', color: C.ink,
+                }}>
+                  <div style={{ fontSize: 12, color: C.green, fontWeight: 700, marginBottom: 6 }}>도착 · 20m</div>
+                  <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 8 }}>하늘마을 103동</div>
+                  <div style={{ fontSize: 19, fontWeight: 800, color: C.green, lineHeight: 1.35 }}>
+                    후문 쪽 입구가 빠름
+                  </div>
+                  <div style={{ fontSize: 12.5, color: C.sub, marginTop: 6 }}>경비실은 정문 왼쪽 · 엘베 2대</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ── 공감 ─────────────────────────────────── */}
+        <section style={{ ...wrap, paddingTop: 52, paddingBottom: 20 }}>
+          <h2 style={{ fontSize: 25, fontWeight: 800, lineHeight: 1.35, margin: '0 0 22px' }}>이런 적 있죠?</h2>
+          {[
+            '도착해서 요청사항 다시 열어보기',
+            '동 번호가 안 보여서 단지 한 바퀴',
+            '지난주에 왔던 건물인데 입구가 기억 안 남',
+          ].map((t) => (
+            <p key={t} style={{
+              fontSize: 16.5, lineHeight: 1.5, margin: '0 0 12px', padding: '14px 16px',
+              background: '#fff', border: `1px solid ${C.line}`, borderRadius: 12,
+            }}>
+              {t}
+            </p>
+          ))}
+          <p style={{ fontSize: 16, color: C.sub, lineHeight: 1.7, margin: '18px 0 0' }}>
+            한 콜에 30초씩만 줄어도, 하루면 꽤 큽니다.
+          </p>
+        </section>
+
+        {/* ── 기능 ─────────────────────────────────── */}
+        <section style={{ ...wrap, paddingTop: 44 }}>
+          <Feature
+            title="도착하면 내 메모가 먼저 뜹니다"
+            body="자주 가는 건물에 나만의 메모를 한 번 적어두세요. 입구 위치, 가는 길, 주의할 점처럼 다음에 알고 싶은 것들요. 다음에 근처에 가면 배달앱을 보고 있어도 그 위에 바로 떠요. 폰을 꺼내 뒤질 필요가 없습니다."
+            img={IMG.toast}
+            label="이미지 2 — 토스트 확대"
+            alt="배달앱 위에 뜬 스마트라이더 건물 메모 알림"
+          />
+          <Feature
+            title="동 배치도와 샛길까지"
+            body="처음 가는 대단지도 배치도를 보고 바로 찾아가세요. 후문, 지하 통로 같은 나만 아는 길도 적어둘 수 있어요."
+            img={IMG.map}
+            label="이미지 3 — 동 배치도 화면"
+            alt="아파트 단지 동 배치도가 표시된 상세 화면"
+          />
+          <Feature
+            title="후면 단속 구간, 미리 알려드려요"
+            body="이륜차 후면번호판 단속 카메라 구간에 가까워지면 소리로 알려드립니다. 헬멧을 쓰고 있어도 들리게 만들었어요. 안전운전에 집중하세요."
+            img={IMG.alert}
+            label="이미지 4 — 안전 알림 화면"
+            alt="후면 단속 구간 안전 알림 화면"
+          />
+        </section>
+
+        {/* ── 안심 ─────────────────────────────────── */}
+        <section style={{ background: C.greenSoft, padding: '48px 0', marginTop: 8 }}>
+          <div style={wrap}>
+            <h2 style={{ fontSize: 25, fontWeight: 800, lineHeight: 1.35, margin: '0 0 14px', color: C.greenDeep }}>
+              내 메모는 서버에 없습니다
+            </h2>
+            <p style={{ fontSize: 16, lineHeight: 1.75, color: C.ink, margin: '0 0 12px' }}>
+              내가 적은 메모는 <strong>내 폰에만</strong> 저장됩니다. 인터넷으로 보내지 않아요.
+              만든 저희도 볼 수 없습니다.
+            </p>
+            <p style={{ fontSize: 16, lineHeight: 1.75, color: C.ink, margin: '0 0 22px' }}>
+              폰을 바꿀 땐 내가 정한 비밀번호로 잠긴 백업 파일로 옮기면 됩니다.
+            </p>
+            <Slot src={IMG.safe} label="이미지 5 — 폰 + 자물쇠" alt="내 메모가 폰 안에만 저장된다는 안내 그림" />
+          </div>
+        </section>
+
+        {/* ── 시작하는 법 (실제 순서라 번호를 쓴다) ───── */}
+        <section style={{ ...wrap, paddingTop: 52 }}>
+          <h2 style={{ fontSize: 25, fontWeight: 800, margin: '0 0 22px' }}>3분이면 시작</h2>
+          {[
+            ['설치하고 로그인', '이메일로 가입합니다.'],
+            ['권한 3가지 허용', '위치는 꼭 "항상 허용"으로 골라주세요. 그래야 배달앱을 보고 있을 때도 알림이 떠요.'],
+            ['자주 가는 건물 등록', '오늘 간 건물부터 하나씩. 쌓일수록 편해집니다.'],
+          ].map(([t, d], i) => (
+            <div key={t} style={{ display: 'flex', gap: 16, marginBottom: 22 }}>
+              <div style={{
+                flex: '0 0 36px', height: 36, borderRadius: 18, background: C.green, color: '#fff',
+                display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: 16,
+              }}>
+                {i + 1}
+              </div>
+              <div>
+                <div style={{ fontSize: 17, fontWeight: 700, marginBottom: 4, paddingTop: 6 }}>{t}</div>
+                <div style={{ fontSize: 15, color: C.sub, lineHeight: 1.65 }}>{d}</div>
+              </div>
+            </div>
+          ))}
+          <a href="/smartrider/guide/" style={{
+            display: 'block', textAlign: 'center', padding: '14px 0', marginTop: 4,
+            border: `1px solid ${C.green}`, borderRadius: 12, color: C.green,
+            fontSize: 15.5, fontWeight: 700, textDecoration: 'none', background: '#fff',
+          }}>
+            설치하셨나요? 사용설명서 보기 →
+          </a>
+        </section>
+
+        {/* ── 선착순 ───────────────────────────────── */}
+        <section style={{ ...wrap, paddingTop: 20 }}>
+          <div style={{ border: `2px solid ${C.orange}`, borderRadius: 16, padding: '24px 22px', background: '#fff' }}>
+            <div style={{ fontSize: 30, fontWeight: 800, color: C.orange, lineHeight: 1.2, marginBottom: 10 }}>
+              먼저 타는 분께
+            </div>
+            <div style={{ fontSize: 19, fontWeight: 700, marginBottom: 8 }}>초기 라이더 혜택</div>
+            <p style={{ fontSize: 15, color: C.sub, lineHeight: 1.65, margin: 0 }}>
+              동탄·병점 라이더분들께 먼저 드립니다. 초기에 함께해 주시는 분들께는 도착 알림을 일정 기간 무료로 드려요.
+              써보시고 불편한 점을 알려주시면 바로 고칩니다.
+            </p>
+          </div>
+        </section>
+
+        {/* ── 자주 묻는 질문 ────────────────────────── */}
+        <section style={{ ...wrap, paddingTop: 52 }}>
+          <h2 style={{ fontSize: 25, fontWeight: 800, margin: '0 0 12px' }}>자주 묻는 질문</h2>
+          <Faq q="아이폰도 되나요?">
+            지금은 안드로이드 전용입니다. 다른 앱 위에 정보를 띄우는 기능을 아이폰이 허용하지 않아서요.
+          </Faq>
+          <Faq q="처음부터 건물 정보가 다 들어 있나요?">
+            아니요. 내가 가는 건물을 내가 적어두는 방식입니다. 대신 한 번 적어두면 그 뒤로는 알아서 떠요.
+            다만 지나가기만 할 때는 뜨지 않고, 건물 근처에서 멈췄다고 판단되면 5초쯤 뒤에 뜹니다.
+            배치도 같은 공용 정보는 지역별로 조금씩 채우고 있습니다.
+          </Faq>
+          <Faq q="배터리 많이 먹나요?">
+            평소 쓰시던 것과 크게 차이 없습니다. 아주 조금 차이가 있을 수 있지만, 크게 못 느끼실 거예요.
+          </Faq>
+          <Faq q="돈이 드나요?">
+            건물 등록·검색·백업 같은 기본 기능은 무료입니다. 도착 알림은 앞으로 월 구독으로 바뀔 예정이며,
+            초기에 함께한 분들께는 일정 기간 무료로 드립니다. 앱 안에 광고가 나올 수 있지만,
+            달리는 중에 보는 화면에는 광고를 넣지 않습니다.
+          </Faq>
+          <Faq q="내 메모, 다른 사람이 볼 수 있나요?">
+            메모는 서버로 보내지 않고 내 폰에만 저장됩니다. 만든 저희도 볼 수 없고, 서버에 없으니 해킹될 것도 없습니다.
+            백업 파일도 내가 정한 비밀번호로 잠겨서, 파일만으로는 열 수 없습니다.
+          </Faq>
+          <Faq q="메모에는 뭘 적으면 되나요?">
+            무엇을 적을지는 라이더님이 정합니다. 입구 위치, 주차 자리, 가는 길처럼 다음에 도움이 될 것들이면 충분해요.
+            다만 배달하며 알게 된 고객 정보는 배달 목적 외에 쓰거나 다른 사람과 나누지 말아 주세요.
+          </Faq>
+        </section>
+
+        {/* ── 맨 아래 ──────────────────────────────── */}
+        <footer style={{ ...wrap, paddingTop: 44, paddingBottom: 20, fontSize: 13, color: '#8A9490', lineHeight: 1.8 }}>
+          <div>스마트라이더 · RichCompany</div>
+          <a href="/smartrider/guide/" style={{ color: '#8A9490' }}>사용설명서</a>{' · '}
+          <a href="/smartrider/privacy/" style={{ color: '#8A9490' }}>개인정보처리방침</a>
+        </footer>
+
+        {/* ── 하단 고정 버튼 ────────────────────────── */}
+        <div style={{
+          position: 'fixed', left: 0, right: 0, bottom: 0, zIndex: 50,
+          padding: '12px 16px calc(12px + env(safe-area-inset-bottom, 0px))',
+          background: 'rgba(251,250,247,0.94)', borderTop: `1px solid ${C.line}`,
+          backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)',
+        }}>
+          <a
+            className="sr-cta"
+            href={PLAY_URL}
+            style={{
+              display: 'block', maxWidth: 448, margin: '0 auto', textAlign: 'center',
+              background: C.green, color: '#fff', textDecoration: 'none',
+              fontSize: 17, fontWeight: 700, padding: '16px 0', borderRadius: 12,
+            }}
+          >
+            Google Play에서 받기
+          </a>
+        </div>
+
+      </div>
+    </div>
+  );
+}
