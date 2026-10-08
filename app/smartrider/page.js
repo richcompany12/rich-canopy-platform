@@ -11,7 +11,7 @@ export const metadata = {
   description: '자주 가는 건물에 메모를 남겨두면, 도착할 때 먼저 띄워드립니다. 내 메모는 내 폰에만 저장됩니다.',
   openGraph: {
     title: '스마트라이더 — 건물이 먼저 알려주는 라이더 앱',
-    description: '한 번 간 건물, 다음엔 헤매지 마세요. 건물이 먼저 알려줍니다.',
+    description: '현직 라이더가 만든 앱. 도착하면 내가 적어둔 메모가 먼저 뜹니다.',
         images: ['https://richcanopy.kr/smartrider/og.jpg'],
   },
 };
@@ -106,15 +106,18 @@ export default function SmartRiderLanding() {
 
       <div className="sr-root">
 
-        {/* ── 첫 화면 ───────────────────────────────── */}
-        <section style={{ background: C.green, color: '#fff', paddingTop: 44, overflow: 'hidden' }}>
+        {/* ── ① 첫 화면 — 명함 앞면과 같은 질문 ─────────── */}
+        <section style={{ background: C.green, color: '#fff', paddingTop: 48, overflow: 'hidden' }}>
           <div style={wrap}>
-            <p style={{ fontSize: 15, fontWeight: 600, opacity: 0.85, margin: '0 0 14px' }}>스마트라이더</p>
-            <h1 style={{ fontSize: 34, fontWeight: 800, lineHeight: 1.25, letterSpacing: '-0.02em', margin: '0 0 14px' }}>
-              한 번 간 건물,<br />다음엔 헤매지 마세요.<br />건물이 먼저 알려줍니다.
+            <h1 style={{ fontSize: 40, fontWeight: 800, lineHeight: 1.22, letterSpacing: '-0.02em', margin: '0 0 16px' }}>
+              요청사항,<br />또 열어보세요?
             </h1>
+            <p style={{ fontSize: 16, fontWeight: 600, margin: '0 0 8px' }}>
+              <span style={{ opacity: 0.85 }}>현직 라이더가 만든 앱</span> · 스마트라이더
+            </p>
+            <div style={{ width: 44, height: 4, borderRadius: 2, background: C.orange, margin: '0 0 22px' }} />
             <p style={{ fontSize: 16, lineHeight: 1.65, opacity: 0.9, margin: '0 0 30px' }}>
-              자주 가는 건물에 메모를 남겨두면,<br />도착하는 순간 쓰던 앱 화면 위에 먼저 뜹니다.
+              도착하면, 배달앱 위에 내가 적어둔 메모가 먼저 뜹니다.
             </p>
 
             {/* 코드로 그린 폰 — 흐린 배달앱 위로 토스트가 올라온다 */}
@@ -150,13 +153,16 @@ export default function SmartRiderLanding() {
           </div>
         </section>
 
-        {/* ── 공감 ─────────────────────────────────── */}
-        <section style={{ ...wrap, paddingTop: 52, paddingBottom: 20 }}>
-          <h2 style={{ fontSize: 25, fontWeight: 800, lineHeight: 1.35, margin: '0 0 22px' }}>이런 적 있죠?</h2>
+        {/* ── ② 공감 — 기능 설명 없이 공감만 ───────────── */}
+        <section style={{ ...wrap, paddingTop: 52, paddingBottom: 12 }}>
+          <h2 style={{ fontSize: 25, fontWeight: 800, lineHeight: 1.35, margin: '0 0 22px' }}>
+            배달할 때 이런 거,<br />한 번씩 다시 보지 않나요?
+          </h2>
           {[
-            '도착해서 요청사항 다시 열어보기',
-            '동 입구가 어디였더라, 단지 한 바퀴',
-            '지난번에 후문이 빨랐는데… 어디였지',
+            '○○오피스텔 732호… 어느 엘베가 빠르지?',
+            '기숙사동 엘베가 어느 쪽이었더라?',
+            '아, 여기 아까 왔던 곳인데...',
+            '주차는 어디에 했었지?',
           ].map((t) => (
             <p key={t} style={{
               fontSize: 16.5, lineHeight: 1.5, margin: '0 0 12px', padding: '14px 16px',
@@ -165,44 +171,48 @@ export default function SmartRiderLanding() {
               {t}
             </p>
           ))}
-          <p style={{ fontSize: 16, color: C.sub, lineHeight: 1.7, margin: '18px 0 0' }}>
-            한 콜에 30초씩만 줄어도, 하루면 꽤 큽니다.
-          </p>
+          <div style={{ margin: '26px 0 0', padding: '20px 0 0', borderTop: `2px solid ${C.green}` }}>
+            <p style={{ fontSize: 21, fontWeight: 800, color: C.green, lineHeight: 1.45, margin: '0 0 6px' }}>
+              한 콜에 30초씩만 줄어도,<br />하루면 꽤 큽니다.
+            </p>
+            <p style={{ fontSize: 15, color: C.sub, margin: 0 }}>하루 30콜이면 15분이에요.</p>
+          </div>
         </section>
 
-        {/* ── 기능 ─────────────────────────────────── */}
-        <section style={{ ...wrap, paddingTop: 44 }}>
+        {/* ── ③~⑥ 해결 ─────────────────────────────── */}
+        <section style={{ ...wrap, paddingTop: 52 }}>
+          <h2 style={{ fontSize: 25, fontWeight: 800, lineHeight: 1.35, margin: '0 0 28px' }}>그래서 만들었습니다</h2>
           <Feature
             title="도착하면 내 메모가 먼저 뜹니다"
-            body="자주 가는 건물에 메모를 한 번 남겨두세요. 다음에 근처에 가면 쓰던 앱 화면 위에 바로 떠요. 폰을 꺼내 뒤질 필요가 없습니다."
+            body="배달앱을 보고 있어도, 건물 앞에서 스마트라이더가 먼저 알려줍니다. 폰을 꺼내 뒤질 필요가 없어요."
             img={IMG.toast}
             label="토스트 이미지"
             alt="다른 앱 화면 위에 뜬 스마트라이더 도착 메모"
           />
           <Feature
-            title="내 건물을 지도에서 한눈에"
-            body="등록한 건물이 지도에 모여 보입니다. 샛길, 동 배치 같은 나만 아는 정보도 건물마다 적어둘 수 있어요."
+            title="한 번 적어두면, 다음부터는 앱이 기억합니다"
+            body="오늘 한 건물 등록해두면 다음 배달부터 내 정보가 됩니다. 다니는 건물이 지도에 하나씩 쌓여요. 샛길, 동 배치 같은 나만 아는 정보까지."
             img={IMG.map}
             label="지도 이미지"
             alt="등록한 건물이 지도에 묶음으로 표시된 화면"
           />
           <Feature
-            title="후면 단속 구간, 미리 알려드려요"
+            title="자주 쓰는 말도 버튼 하나로"
+            body="버튼을 길게 눌러 내가 자주 쓰는 말로 바꾸세요. 한 번 누르면 바로 입력됩니다. 장갑 낀 손으로도 빠르게."
+            img={IMG.buttons}
+            label="단축 버튼 이미지"
+            alt="건물 등록 화면의 나만의 단축 버튼"
+          />
+          <Feature
+            title="달릴 때는 안전 알림까지"
             body="이륜차 후면번호판 단속 구간에 가까워지면 소리로 알려드립니다. 헬멧을 쓰고 있어도 들리게 만들었어요. 안전운전에 집중하세요."
             img={IMG.alert}
             label="안전 알림 이미지"
             alt="후면 단속 구간 안전 알림 화면"
           />
-          <Feature
-            title="자주 쓰는 말은 나만의 버튼으로"
-            body="버튼을 길게 눌러 원하는 말로 바꾸세요. 한 번 누르면 바로 입력됩니다. 장갑 낀 손으로도 빠르게."
-            img={IMG.buttons}
-            label="단축 버튼 이미지"
-            alt="건물 등록 화면의 나만의 단축 버튼"
-          />
         </section>
 
-        {/* ── 안심 ─────────────────────────────────── */}
+        {/* ── ⑦ 안심 ───────────────────────────────── */}
         <section style={{ background: C.greenSoft, padding: '48px 0', marginTop: 8 }}>
           <div style={wrap}>
             <h2 style={{ fontSize: 25, fontWeight: 800, lineHeight: 1.35, margin: '0 0 14px', color: C.greenDeep }}>
@@ -219,7 +229,33 @@ export default function SmartRiderLanding() {
           </div>
         </section>
 
-        {/* ── 시작하는 법 (실제 순서라 번호를 쓴다) ───── */}
+        {/* ── ⑧ 행동 — 무료보다 행동이 먼저 ─────────────── */}
+        <section style={{ ...wrap, paddingTop: 52 }}>
+          <div style={{ border: `2px solid ${C.green}`, borderRadius: 16, padding: '26px 22px', background: '#fff' }}>
+            <h2 style={{ fontSize: 25, fontWeight: 800, lineHeight: 1.35, margin: '0 0 18px' }}>
+              오늘 간 건물 하나만<br />등록해보세요.
+            </h2>
+            <a className="sr-cta" href={PLAY_URL} style={{
+              display: 'block', textAlign: 'center', background: C.green, color: '#fff', textDecoration: 'none',
+              fontSize: 17, fontWeight: 700, padding: '16px 0', borderRadius: 12, marginBottom: 20,
+            }}>
+              스마트라이더 시작하기 →
+            </a>
+            <div style={{
+              display: 'inline-block', background: C.orange, color: '#fff', fontSize: 15, fontWeight: 800,
+              padding: '6px 14px', borderRadius: 20, marginBottom: 10,
+            }}>
+              지금은 전부 무료
+            </div>
+            <p style={{ fontSize: 14.5, color: C.sub, lineHeight: 1.65, margin: 0 }}>
+              도착 메모 자동 표시 기능은 추후 월 구독으로 바뀔 예정이에요.
+              먼저 시작하신 분들께는 무료 기간을 드립니다.
+              써보시고 불편한 점을 알려주시면 바로 고칩니다.
+            </p>
+          </div>
+        </section>
+
+        {/* ── ⑨ 시작하는 법 (실제 순서라 번호를 쓴다) ───── */}
         <section style={{ ...wrap, paddingTop: 52 }}>
           <h2 style={{ fontSize: 25, fontWeight: 800, margin: '0 0 22px' }}>3분이면 시작</h2>
           {[
@@ -247,20 +283,6 @@ export default function SmartRiderLanding() {
           }}>
             설치하셨나요? 사용설명서 보기 →
           </a>
-        </section>
-
-        {/* ── 무료 안내 ────────────────────────────── */}
-        <section style={{ ...wrap, paddingTop: 20 }}>
-          <div style={{ border: `2px solid ${C.orange}`, borderRadius: 16, padding: '24px 22px', background: '#fff' }}>
-            <div style={{ fontSize: 34, fontWeight: 800, color: C.orange, lineHeight: 1.1, marginBottom: 10 }}>
-              지금은 전부 무료
-            </div>
-            <p style={{ fontSize: 15, color: C.sub, lineHeight: 1.65, margin: 0 }}>
-              도착 메모 자동 표시 기능은 추후 월 구독으로 바뀔 예정이에요.
-              먼저 시작하신 분들께는 무료 기간을 드립니다.
-              써보시고 불편한 점을 알려주시면 바로 고칩니다.
-            </p>
-          </div>
         </section>
 
         {/* ── 자주 묻는 질문 ────────────────────────── */}

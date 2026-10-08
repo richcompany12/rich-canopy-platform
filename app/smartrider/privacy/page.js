@@ -1,3 +1,4 @@
+// app/smartrider/privacy/page.js
 export const metadata = {
   title: '개인정보처리방침 | 스마트라이더',
   description: '스마트라이더(SmartRider) 개인정보처리방침',
@@ -28,9 +29,9 @@ export default function SmartRiderPrivacy() {
     <main style={{ backgroundColor: '#0d1117', minHeight: '100vh', padding: '60px 20px' }}>
       <div style={{ maxWidth: '720px', margin: '0 auto' }}>
 
-        <a href="/smartrider/" style={{ color: '#8B949E', fontSize: '13px', textDecoration: 'none' }}>  {/* ★ 새 줄 */}
-          ← 스마트라이더                                                                              {/* ★ 새 줄 */}
-        </a>                                                                                          {/* ★ 새 줄 */}
+        <a href="/smartrider/" style={{ color: '#8B949E', fontSize: '13px', textDecoration: 'none' }}>
+          ← 스마트라이더
+        </a>
 
         <div style={{ textAlign: 'center', marginBottom: '48px' }}>
           <p style={{ color: '#4FC3F7', fontSize: '12px', letterSpacing: '3px', marginBottom: '12px' }}>
@@ -64,14 +65,17 @@ export default function SmartRiderPrivacy() {
           {'· 이메일 주소 - 회원 가입 및 로그인'}<br />
           {'· 위치 정보 - 근접 알림 기능 제공'}<br />
           {'· 제보 내용 및 사진 - 이용자가 제보 기능을 이용한 경우에 한함'}<br />
-          {'· 광고 ID 등 기기 정보 - 광고 제공 (11조 참고)'}
+          {'· 광고 ID 등 기기 정보 - 광고 제공 (11조 참고)'}<br />
+          {'· 활동 지역 (이용자가 직접 고른 시·군·구, 최대 3곳) - 지역별 정보 제공, 서비스 통계'}<br />
+          {'· 등록한 건물의 개수 (건물 이름·메모·위치는 제외), 마지막 접속일(날짜), 앱 버전 - 서비스 통계'}<br />
+          {'· 지역 파트너·제휴 안내 수신 동의 여부와 동의일 - 동의한 경우에 한해 지역 파트너·제휴 안내 연락 (가입한 이메일)'}
           <p style={{ marginTop: '14px' }}>
             주민등록번호, 연락처, 결제 정보는 수집하지 않습니다.
           </p>
         </Section>
 
         <Section no="2" title="수집하지 않는 정보">
-          {'· 이용자가 등록한 건물 목록 및 도착 메모'}<br />
+          {'· 이용자가 등록한 건물 목록 및 도착 메모 (건물의 개수만 집계하며, 이름·메모·위치는 서버로 전송되지 않습니다)'}<br />
           {'· 즐겨찾기 내역'}
           <p style={{ marginTop: '14px' }}>
             위 정보는 이용자 기기 내부 저장소에만 보관되며 서버로 전송되지 않습니다.
@@ -95,18 +99,31 @@ export default function SmartRiderPrivacy() {
             위치 정보 제공은 기기 설정에서 언제든 철회할 수 있으며,
             철회 시 근접 알림 기능은 동작하지 않습니다.
           </p>
+          <p style={{ marginTop: '14px' }}>
+            활동 지역은 이용자가 직접 선택한 값이며, 기기의 위치로 자동 설정하지 않습니다.
+          </p>
         </Section>
 
         <Section no="4" title="보유 및 이용 기간">
           {'· 회원 정보 - 회원 탈퇴 시 지체 없이 파기'}<br />
-          {'· 제보 내용 및 사진 - 회원 탈퇴 시 함께 삭제'}<br />
-          {'· 위치 정보 - 별도로 저장하지 않음'}
+          {'· 제보 원본(사진 포함) - 회원 탈퇴 시 삭제'}<br />
+          {'· 위치 정보 - 별도로 저장하지 않음'}<br />
+          {'· 활동 지역·이용 통계 - 회원 탈퇴 시 지체 없이 파기'}<br />
+          {'· 지역 파트너·제휴 안내 수신 동의 - 동의 철회 또는 회원 탈퇴 시 지체 없이 파기 (앱 설정에서 언제든 철회 가능)'}
+          <p style={{ marginTop: '14px' }}>
+            검수를 거쳐 공용 건물 정보로 반영된 내용은 개인정보를 제외하고
+            탈퇴 후에도 서비스에 계속 이용될 수 있습니다(이용약관 제4조).
+          </p>
         </Section>
 
         <Section no="5" title="개인정보의 제3자 제공">
           회사는 이용자의 개인정보를 제3자에게 제공하지 않습니다.
           다만 법령에 따라 수사기관의 적법한 요청이 있는 경우는 예외로 합니다.
           앱에 포함된 광고 모듈의 정보 수집은 11조(광고)를 참고해 주세요.
+          <p style={{ marginTop: '14px' }}>
+            건물 이름·위치·특이사항 등 공용 건물 정보는 개인정보가 아니며,
+            이용약관에 따라 제휴사에 제공될 수 있습니다.
+          </p>
         </Section>
 
         <Section no="6" title="처리 위탁">
@@ -187,8 +204,12 @@ export default function SmartRiderPrivacy() {
           fontSize: '13px',
           lineHeight: '1.9'
         }}>
-          {'시행일 - 2026년 9월 20일'}<br />
+          {'시행일 - 2026년 10월 8일'}<br />
           리치컴퍼니
+          <br />
+          <a href="/smartrider/terms" style={{ color: '#4FC3F7', textDecoration: 'none' }}>
+            이용약관 보기
+          </a>
         </div>
 
       </div>
